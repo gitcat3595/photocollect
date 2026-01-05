@@ -1,0 +1,578 @@
+/* ========================================
+   CREATE ALBUM PAGE - CLASSICAL FORM STYLING
+   Old Money Luxury Aesthetic
+   ======================================== */
+
+/* ========== PAGE CONTAINER ========== */
+.create-page-container {
+    min-height: 100vh;
+    background-color: var(--color-bg-primary);
+    padding: var(--spacing-lg) var(--spacing-md);
+}
+
+/* ========== HEADER ========== */
+.create-header {
+    max-width: 800px;
+    margin: 0 auto var(--spacing-xl);
+    text-align: center;
+    border-bottom: 1px solid var(--color-accent-gold);
+    padding-bottom: var(--spacing-lg);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    margin-bottom: var(--spacing-md);
+    transition: color var(--transition-fast);
+}
+
+.back-link:hover {
+    color: var(--color-text-primary);
+}
+
+.back-link svg {
+    transition: transform var(--transition-fast);
+}
+
+.back-link:hover svg {
+    transform: translateX(-4px);
+}
+
+.create-main-title {
+    font-family: var(--font-serif);
+    font-size: clamp(48px, 6vw, 72px);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.1;
+}
+
+.create-subtitle {
+    font-family: var(--font-serif-italic);
+    font-size: clamp(16px, 2vw, 20px);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+}
+
+/* ========== FORM CONTAINER ========== */
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--color-accent-gold);
+    border-radius: 2px;
+    padding: var(--spacing-xl);
+    box-shadow: 0 4px 24px rgba(26, 21, 17, 0.06);
+}
+
+.album-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+/* ========== FORM SECTIONS ========== */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-label {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent-dark);
+}
+
+.form-input {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-text-secondary);
+    border-radius: 2px;
+    padding: 16px 20px;
+    transition: all var(--transition-medium);
+}
+
+.form-input::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-accent-gold);
+    background-color: #FEFDFB;
+    box-shadow: 0 0 0 3px rgba(184, 151, 90, 0.1);
+}
+
+.form-hint {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    font-style: italic;
+    margin-top: -4px;
+}
+
+/* ========== FORM ROW (2 columns) ========== */
+.form-row {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.form-half {
+    flex: 1;
+}
+
+/* ========== FORM DIVIDER ========== */
+.form-divider {
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        var(--color-accent-gold),
+        transparent
+    );
+    margin: var(--spacing-md) 0;
+}
+
+/* ========== PHOTO UPLOAD SECTION ========== */
+.photo-upload-section {
+    margin-top: var(--spacing-md);
+}
+
+.photo-hint {
+    margin-bottom: var(--spacing-sm);
+}
+
+.upload-area {
+    border: 2px dashed var(--color-text-secondary);
+    border-radius: 4px;
+    padding: var(--spacing-xl);
+    text-align: center;
+    background-color: var(--color-bg-primary);
+    transition: all var(--transition-medium);
+    cursor: pointer;
+    position: relative;
+}
+
+.upload-area::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 4px;
+    background: linear-gradient(135deg, rgba(184, 151, 90, 0.05) 0%, rgba(184, 151, 90, 0) 100%);
+    opacity: 0;
+    transition: opacity var(--transition-medium);
+    pointer-events: none;
+}
+
+.upload-area:hover::after {
+    opacity: 1;
+}
+
+.upload-area.dragover {
+    border-color: var(--color-accent-gold);
+    background-color: rgba(184, 151, 90, 0.05);
+    transform: scale(1.01);
+}
+
+.upload-area:hover {
+    border-color: var(--color-accent-gold);
+    background-color: rgba(245, 241, 232, 0.8);
+}
+
+.upload-icon {
+    margin-bottom: var(--spacing-sm);
+}
+
+.upload-icon svg {
+    stroke: var(--color-text-secondary);
+    opacity: 0.6;
+}
+
+.upload-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--color-text-primary);
+    margin-bottom: 8px;
+}
+
+.upload-text {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.browse-button {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-bg-primary);
+    background-color: var(--color-accent-dark);
+    border: 1px solid var(--color-accent-gold);
+    padding: 12px 32px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    margin-bottom: var(--spacing-sm);
+}
+
+.browse-button:hover {
+    background-color: var(--color-accent-gold);
+    color: var(--color-text-primary);
+    transform: translateY(-1px);
+}
+
+.upload-requirements {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    margin-top: var(--spacing-sm);
+}
+
+/* ========== PHOTO PREVIEW GRID ========== */
+.photo-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.photo-preview-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 2px;
+    overflow: hidden;
+    border: 1px solid var(--color-text-secondary);
+    background-color: var(--color-bg-secondary);
+    transition: transform var(--transition-medium);
+    cursor: pointer;
+}
+
+.photo-preview-item:hover {
+    transform: scale(1.02);
+}
+
+.photo-preview-item:active {
+    transform: scale(0.98);
+}
+
+.photo-preview-item.cover-photo::before {
+    content: 'COVER';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: white;
+    background-color: var(--color-accent-gold);
+    padding: 4px 8px;
+    border-radius: 2px;
+    z-index: 2;
+    animation: coverBadge 0.3s ease-out;
+}
+
+.photo-preview-item.cover-photo::after {
+    content: '📷 ダブルタップでカバー変更';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-sans);
+    font-size: 9px;
+    color: white;
+    background-color: rgba(26, 21, 17, 0.8);
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.photo-preview-item.cover-photo:hover::after {
+    opacity: 1;
+}
+
+.photo-preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-remove-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    background-color: rgba(26, 21, 17, 0.8);
+    border: 1px solid var(--color-accent-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: all var(--transition-medium);
+    z-index: 2;
+}
+
+.photo-preview-item:hover .photo-remove-button {
+    opacity: 1;
+}
+
+.photo-remove-button:hover {
+    background-color: var(--color-accent-gold);
+    transform: scale(1.1);
+}
+
+.photo-remove-button svg {
+    width: 16px;
+    height: 16px;
+    stroke: white;
+}
+
+/* ========== FORM ACTIONS ========== */
+.form-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-accent-gold);
+}
+
+.button-primary,
+.button-secondary {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    border: 1px solid;
+}
+
+.button-primary {
+    color: var(--color-bg-primary);
+    background-color: var(--color-accent-dark);
+    border-color: var(--color-accent-gold);
+}
+
+.button-primary:hover:not(:disabled) {
+    background-color: var(--color-accent-gold);
+    color: var(--color-text-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(26, 21, 17, 0.15);
+}
+
+.button-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.button-secondary {
+    color: var(--color-text-primary);
+    background-color: transparent;
+    border-color: var(--color-text-secondary);
+}
+
+.button-secondary:hover {
+    background-color: var(--color-bg-secondary);
+    border-color: var(--color-accent-gold);
+}
+
+/* ========== FOOTER ========== */
+.create-footer {
+    max-width: 800px;
+    margin: var(--spacing-xl) auto 0;
+    text-align: center;
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-accent-gold);
+}
+
+.create-footer p {
+    font-family: var(--font-serif-italic);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--color-text-secondary);
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+}
+
+@keyframes coverSelected {
+    0% {
+        transform: scale(1);
+        border-color: var(--color-text-secondary);
+    }
+    50% {
+        transform: scale(1.05);
+        border-color: var(--color-accent-gold);
+        box-shadow: 0 0 20px rgba(184, 151, 90, 0.5);
+    }
+    100% {
+        transform: scale(1);
+        border-color: var(--color-accent-gold);
+    }
+}
+
+@keyframes coverBadge {
+    from {
+        transform: scale(0) translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.photo-preview-item {
+    animation: fadeInScale 0.3s ease-out;
+}
+
+/* ========== LOADING STATE ========== */
+.button-primary.loading {
+    position: relative;
+    color: transparent;
+}
+
+.button-primary.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid var(--color-bg-primary);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ========== RESPONSIVE ========== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .form-container {
+        padding: var(--spacing-lg);
+    }
+    
+    .photo-preview-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .create-page-container {
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+    
+    .create-header {
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-md);
+    }
+    
+    .create-main-title {
+        font-size: 36px;
+    }
+    
+    .form-container {
+        padding: var(--spacing-md);
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .upload-area {
+        padding: var(--spacing-lg);
+    }
+    
+    .upload-icon svg {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .photo-preview-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 12px;
+    }
+    
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .button-primary,
+    .button-secondary {
+        width: 100%;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .create-main-title {
+        font-size: 28px;
+    }
+    
+    .form-container {
+        padding: var(--spacing-sm);
+    }
+    
+    .photo-preview-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Album - Family Albums</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/create.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="create-page-container">
+        <!-- Header -->
+        <header class="create-header">
+            <a href="index.html" class="back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back to Gallery</span>
+            </a>
+            <h1 class="create-main-title">Create New Album</h1>
+            <p class="create-subtitle">Preserve your timeless memories with elegance</p>
+        </header>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <form id="album-form" class="album-form">
+                
+                <!-- Album Title -->
+                <div class="form-section">
+                    <label for="album-title" class="form-label">Album Title</label>
+                    <input 
+                        type="text" 
+                        id="album-title" 
+                        name="title"
+                        class="form-input" 
+                        placeholder="Yaeyama Islands"
+                        required
+                    >
+                    <p class="form-hint">The main title of your album</p>
+                </div>
+
+                <!-- Catchphrase -->
+                <div class="form-section">
+                    <label for="catchphrase" class="form-label">Catchphrase</label>
+                    <input 
+                        type="text" 
+                        id="catchphrase" 
+                        name="catchphrase"
+                        class="form-input" 
+                        placeholder="Where turquoise waters meet ancient traditions"
+                        required
+                    >
+                    <p class="form-hint">A poetic description in quotes</p>
+                </div>
+
+                <!-- Location & Date Row -->
+                <div class="form-row">
+                    <!-- Country -->
+                    <div class="form-section form-half">
+                        <label for="country" class="form-label">Country</label>
+                        <input 
+                            type="text" 
+                            id="country" 
+                            name="country"
+                            class="form-input" 
+                            placeholder="Japan"
+                            required
+                        >
+                    </div>
+
+                    <!-- Year -->
+                    <div class="form-section form-half">
+                        <label for="year" class="form-label">Year</label>
+                        <input 
+                            type="number" 
+                            id="year" 
+                            name="year"
+                            class="form-input" 
+                            placeholder="2025"
+                            min="1900"
+                            max="2100"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Season/Month -->
+                <div class="form-section">
+                    <label for="season" class="form-label">Season or Month</label>
+                    <input 
+                        type="text" 
+                        id="season" 
+                        name="season"
+                        class="form-input" 
+                        placeholder="Summer"
+                        required
+                    >
+                    <p class="form-hint">e.g., Summer, December, Spring</p>
+                </div>
+
+                <!-- Date -->
+                <div class="form-section">
+                    <label for="date" class="form-label">Date Range</label>
+                    <input 
+                        type="text" 
+                        id="date" 
+                        name="date"
+                        class="form-input" 
+                        placeholder="June 15-20, 2025"
+                    >
+                    <p class="form-hint">Optional: Specific date range</p>
+                </div>
+
+                <!-- Divider -->
+                <div class="form-divider"></div>
+
+                <!-- Photo Upload Section -->
+                <div class="form-section photo-upload-section">
+                    <label class="form-label">Album Photos</label>
+                    <p class="form-hint photo-hint">Upload 1-12 photos for your album. First photo will be the cover.</p>
+                    
+                    <!-- Drag & Drop Area -->
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-icon">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </div>
+                        <h3 class="upload-title">Drop your photos here</h3>
+                        <p class="upload-text">or</p>
+                        <button type="button" class="browse-button" id="browse-button">Browse Files</button>
+                        <input type="file" id="file-input" accept="image/*" multiple hidden>
+                        <p class="upload-requirements">JPG, PNG, or WebP • Max 50MB each • 1-12 photos</p>
+                    </div>
+
+                    <!-- Photo Preview Grid -->
+                    <div class="photo-preview-grid" id="photo-preview-grid">
+                        <!-- Photos will be added here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="button-secondary" onclick="window.location.href='index.html'">
+                        Cancel
+                    </button>
+                    <button type="submit" class="button-primary" id="submit-button">
+                        Create Album
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <footer class="create-footer">
+            <p>Family Albums — Timeless Memories, Elegantly Preserved</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/create.js"></script>
+</body>
+</html>

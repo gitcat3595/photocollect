@@ -1,0 +1,736 @@
+/* ========================================
+   FAMILY ALBUMS - OLD MONEY LUXURY STYLE
+   New Japan × Kinfolk Aesthetic
+   ======================================== */
+
+/* ========== CSS VARIABLES ========== */
+:root {
+    /* Old Money Color Palette */
+    --color-bg-primary: #F5F1E8;
+    --color-bg-secondary: #E8E3D6;
+    --color-text-primary: #1A1511;
+    --color-text-secondary: #6B5D52;
+    --color-accent-gold: #B8975A;
+    --color-accent-dark: #2C2416;
+    
+    /* Typography */
+    --font-serif: 'Playfair Display', 'EB Garamond', serif;
+    --font-serif-italic: 'EB Garamond', serif;
+    --font-sans: 'Inter', sans-serif;
+    
+    /* Spacing - Generous Luxury */
+    --spacing-xs: 16px;
+    --spacing-sm: 24px;
+    --spacing-md: 48px;
+    --spacing-lg: 80px;
+    --spacing-xl: 120px;
+    
+    /* Transitions - Slow & Luxurious */
+    --transition-slow: 0.6s ease-out;
+    --transition-medium: 0.4s ease-out;
+    --transition-fast: 0.2s ease-out;
+}
+
+/* ========== GLOBAL RESET ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    
+    /* Subtle paper texture */
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.01) 0px,
+            transparent 1px,
+            transparent 2px,
+            rgba(0, 0, 0, 0.01) 3px
+        );
+}
+
+/* ========== PAGE TRANSITIONS ========== */
+.page-container {
+    display: none;
+    min-height: 100vh;
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+}
+
+.page-container.active {
+    display: block;
+    opacity: 1;
+}
+
+/* ========== HERO SECTION ========== */
+.hero-section {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    border-bottom: 1px solid var(--color-accent-gold);
+    position: relative;
+}
+
+.hero-content {
+    max-width: 900px;
+    animation: fadeInUp 1s ease-out;
+}
+
+.main-title {
+    font-family: var(--font-serif);
+    font-size: clamp(60px, 8vw, 120px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.1;
+}
+
+.tagline {
+    font-family: var(--font-serif-italic);
+    font-size: clamp(18px, 2vw, 28px);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.02em;
+}
+
+/* ========== CAROUSEL SECTION ========== */
+.carousel-section {
+    padding: var(--spacing-xl) 0;
+    background-color: var(--color-bg-primary);
+}
+
+.album-carousel {
+    max-width: 100%;
+    padding: var(--spacing-md) 0;
+}
+
+.swiper-slide {
+    width: 240px;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* PC以上でサイズアップ */
+@media (min-width: 1024px) {
+    .swiper-slide {
+        width: 320px;
+        height: 400px;
+    }
+}
+
+.album-cover {
+    width: 90%;
+    height: 90%;
+    cursor: pointer;
+    transition: transform var(--transition-medium);
+    position: relative;
+    margin: 0 auto;
+}
+
+.album-cover:hover {
+    transform: scale(1.02);
+}
+
+.album-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 
+        0 1px 3px rgba(255, 255, 255, 0.8),
+        0 10px 30px rgba(26, 21, 17, 0.15),
+        0 5px 15px rgba(26, 21, 17, 0.1),
+        inset 0 1px 2px rgba(255, 255, 255, 0.5),
+        inset 0 -1px 2px rgba(26, 21, 17, 0.05);
+    transform: translateZ(0);
+}
+
+/* 本の背表紙（左端の線） */
+.album-image::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 15px;
+    background: linear-gradient(
+        to right,
+        rgba(26, 21, 17, 0.3) 0%,
+        rgba(26, 21, 17, 0.15) 40%,
+        transparent 100%
+    );
+    z-index: 2;
+}
+/* 本の折れ目線 */
+.album-image::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.2) 10%,
+        rgba(0, 0, 0, 0.3) 50%,
+        rgba(0, 0, 0, 0.2) 90%,
+        transparent 100%
+    );
+    z-index: 2;
+}
+
+.album-image img {                    /* ← ここに追加 */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+
+
+/* ホバー時にさらに浮き上がる */
+.album-cover:hover .album-image {
+    box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        0 15px 50px rgba(26, 21, 17, 0.35),
+        0 25px 70px rgba(26, 21, 17, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateZ(10px) translateY(-5px);      /* 少し浮き上がる */
+}
+
+.album-cover:hover .album-image img {
+    transform: scale(1.05);
+}
+
+.album-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 55%;
+    padding: 150px 32px 48px 32px;
+    background: linear-gradient(
+        to top,
+        rgba(26, 21, 17, 0.9) 0%,
+        rgba(26, 21, 17, 0.6) 60%,
+        transparent 100%
+    );
+    color: #fff;
+}
+
+.album-title {
+    font-family: var(--font-serif);
+    font-size: 40px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.album-year {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 200;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: left;
+    opacity: 0.9;
+}
+
+/* ========== CTA SECTION ========== */
+.cta-section {
+    padding: var(--spacing-xl) var(--spacing-md);
+    text-align: center;
+    border-top: 1px solid var(--color-accent-gold);
+}
+
+.create-button {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-bg-primary);
+    background-color: var(--color-accent-dark);
+    border: 1px solid var(--color-accent-gold);
+    padding: 20px 60px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    position: relative;
+    overflow: hidden;
+}
+
+.create-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(184, 151, 90, 0.2),
+        transparent
+    );
+    transition: left var(--transition-slow);
+}
+
+.create-button:hover::before {
+    left: 100%;
+}
+
+.create-button:hover {
+    background-color: var(--color-accent-gold);
+    color: var(--color-text-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26, 21, 17, 0.15);
+}
+
+/* ========== BOOK OPENING ANIMATION ========== */
+.book-opening-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-bg-primary);
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.book-opening-overlay.active {
+    display: block;
+    animation: bookOpen 1.2s ease-in-out forwards;
+}
+
+@keyframes bookOpen {
+    0% {
+        opacity: 0;
+        transform: perspective(2000px) rotateY(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: perspective(2000px) rotateY(-15deg);
+    }
+    100% {
+        opacity: 0;
+        transform: perspective(2000px) rotateY(-90deg);
+    }
+}
+
+/* ========== ALBUM DETAIL PAGE ========== */
+.album-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-md);
+    animation: fadeIn 0.8s ease-out;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 12px 0;
+    margin-bottom: var(--spacing-lg);
+    transition: color var(--transition-fast);
+}
+
+.back-button:hover {
+    color: var(--color-text-primary);
+}
+
+.back-button svg {
+    transition: transform var(--transition-fast);
+}
+
+.back-button:hover svg {
+    transform: translateX(-4px);
+}
+
+/* ========== ALBUM HEADER ========== */
+.album-header {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    border-bottom: 1px solid var(--color-accent-gold);
+    margin-bottom: var(--spacing-xl);
+}
+
+.album-main-title {
+    font-family: var(--font-serif);
+    font-size: clamp(60px, 10vw, 120px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-primary);
+}
+
+.album-subtitle {
+    font-family: var(--font-sans);
+    font-size: clamp(16px, 2vw, 24px);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+.album-catchphrase {
+    font-family: var(--font-serif-italic);
+    font-size: clamp(20px, 2.5vw, 32px);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* ========== PHOTO GALLERY ========== */
+.photo-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.photo-block {
+    width: 80%;
+    max-width: 1000px;
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.photo-block:nth-child(1) { animation-delay: 0.1s; }
+.photo-block:nth-child(2) { animation-delay: 0.2s; }
+.photo-block:nth-child(3) { animation-delay: 0.3s; }
+.photo-block:nth-child(4) { animation-delay: 0.4s; }
+.photo-block:nth-child(5) { animation-delay: 0.5s; }
+.photo-block:nth-child(n+6) { animation-delay: 0.6s; }
+
+
+.photo-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 800px;      /* 最大幅を制限 */
+    aspect-ratio: 4 / 5;   /* 4:5の縦長比率を維持 */
+    overflow: hidden;
+    border-radius: 2px;
+    box-shadow: 0 4px 24px rgba(26, 21, 17, 0.08);
+    margin: 0 auto;        /* 中央揃え */
+}
+
+.photo-wrapper img {
+    width: 100%;
+    height: 100%;          /* ラッパーの高さいっぱいに */
+    object-fit: cover;     /* 比率を保って切り抜き */
+    object-position: center; /* 中央を基準に */
+    display: block;
+    transition: transform var(--transition-slow);
+}
+
+.photo-wrapper:hover img {
+    transform: scale(1.02);
+}
+
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .photo-wrapper {
+        max-width: 90vw;
+    }
+}
+
+/* キャプション部分　そのうち実装するかも
+.photo-caption {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-top: var(--spacing-sm);
+}
+*/
+
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .main-title {
+        font-size: 80px;
+    }
+    
+    .album-main-title {
+        font-size: 80px;
+    }
+    
+    .photo-block {
+        width: 85%;
+    }
+    
+    .swiper-slide {
+        width: 280px;
+        height: 420px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    :root {
+        --spacing-lg: 60px;
+        --spacing-xl: 80px;
+    }
+    
+    .hero-section {
+        min-height: 50vh;
+        padding: var(--spacing-lg) var(--spacing-sm);
+    }
+    
+    .main-title {
+        font-size: 48px;
+    }
+    
+    .tagline {
+        font-size: 18px;
+    }
+    
+    
+    /* ========== CAROUSEL SECTION ========== */
+.carousel-section {
+    padding: var(--spacing-xl) 0;
+    background: linear-gradient(
+        180deg, 
+        var(--color-bg-primary) 0%, 
+        rgba(245, 242, 238, 0.5) 50%,
+        var(--color-bg-primary) 100%
+    );
+    overflow: hidden;
+    position: relative;
+}
+
+/* 背景に光の効果（オプション） */
+.carousel-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.3) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+.album-carousel {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--spacing-md) var(--spacing-md);
+}
+
+.album-carousel {
+    max-width: 1400px;        /* 最大幅を制限 */
+    margin: 0 auto;           /* 中央配置 */
+    padding: var(--spacing-md) var(--spacing-md);
+}
+
+.swiper-slide {
+    width: 240px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.album-cover {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transition: transform var(--transition-medium);
+    position: relative;
+    margin: 0 auto;
+}
+
+.album-cover:hover {
+    transform: scale(1.02);
+}
+
+.album-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 
+        0 10px 40px rgba(26, 21, 17, 0.1),
+        0 2px 8px rgba(26, 21, 17, 0.08);
+}
+
+.album-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.album-cover:hover .album-image img {
+    transform: scale(1.05);
+}
+
+.album-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--spacing-md);
+    background: linear-gradient(
+        to top,
+        rgba(26, 21, 17, 0.9) 0%,
+        rgba(26, 21, 17, 0.6) 60%,
+        transparent 100%
+    );
+    color: #fff;
+}
+
+.album-title {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-xs);
+}
+
+.album-year {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+    .swiper-slide {
+        width: 200px;
+        height: 250px;
+    }
+    
+    .album-title {
+        font-size: clamp(24px, 4vw, 32px);
+    }
+}
+
+
+/* ========== PRINT STYLES ========== */
+@media print {
+    .back-button,
+    .create-button,
+    .cta-section {
+        display: none;
+    }
+    
+    body {
+        background: white;
+    }
+}
+/* ========== CLOSE ALBUM BUTTON ========== */
+.album-close-section {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+    margin-top: var(--spacing-xl);
+    clear: both;
+}
+
+.close-album-button {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-bg-primary);
+    background: var(--color-accent-dark);
+    border: 1px solid var(--color-accent-gold);
+    padding: 16px 48px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.close-album-button span {
+    font-size: 18px;
+}
+
+.close-album-button:hover {
+    background: var(--color-accent-gold);
+    color: var(--color-accent-dark);
+    transform: translateY(-2px);
+}
+/* ========== ANIMATIONS ========== */

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Albums - Timeless Memories</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+</head>
+<body>
+    <!-- Top Page -->
+    <div id="top-page" class="page-container active">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="main-title">Family Albums</h1>
+                <p class="tagline">Timeless Memories, Elegantly Preserved</p>
+            </div>
+        </section>
+
+        <!-- Album Carousel -->
+        <section class="carousel-section">
+            <div class="swiper album-carousel">
+                <div class="swiper-wrapper">
+                    <!-- Album 1: Yaeyama Islands -->
+                    <div class="swiper-slide">
+                        <div class="album-cover" data-album-id="yaeyama">
+                            <div class="album-image">
+                                <img src="images/yaeyama-cover.jpg" alt="Yaeyama Islands">
+                                <div class="album-overlay">
+                                    <h2 class="album-title">YAEYAMA<br>ISLANDS</h2>
+                                    <p class="album-year">Summer 2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Album 2: Alps Winter Retreat -->
+                    <div class="swiper-slide">
+                        <div class="album-cover" data-album-id="alps">
+                            <div class="album-image">
+                                <img src="images/alps-cover.jpg" alt="Alps Winter Retreat">
+                                <div class="album-overlay">
+                                    <h2 class="album-title">ALPS WINTER<br>RETREAT</h2>
+                                    <p class="album-year">December 2024</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Album 3: Tuscan Harvest -->
+                    <div class="swiper-slide">
+                        <div class="album-cover" data-album-id="tuscany">
+                            <div class="album-image">
+                                <img src="images/tuscany-cover.jpg" alt="Tuscan Harvest">
+                                <div class="album-overlay">
+                                    <h2 class="album-title">TUSCAN<br>HARVEST</h2>
+                                    <p class="album-year">Autumn 2024</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Album 4: Kyoto Spring -->
+                    <div class="swiper-slide">
+                        <div class="album-cover" data-album-id="kyoto">
+                            <div class="album-image">
+                                <img src="images/kyoto-cover.jpg" alt="Kyoto Spring">
+                                <div class="album-overlay">
+                                    <h2 class="album-title">KYOTO<br>SPRING</h2>
+                                    <p class="album-year">April 2024</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <button class="create-button" onclick="showCreateForm()">Create My Album</button>
+        </section>
+    </div>
+
+    <!-- Album Detail Page -->
+    <div id="album-page" class="page-container">
+        <!-- Book Opening Animation Overlay -->
+        <div class="book-opening-overlay"></div>
+
+        <!-- Album Content -->
+        <div class="album-content">
+            <!-- Back Button -->
+            <button class="back-button" onclick="backToGallery()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Gallery</span>
+            </button>
+
+            <!-- Album Header -->
+            <header class="album-header">
+                <h1 class="album-main-title" id="album-title">YAEYAMA ISLANDS</h1>
+                <p class="album-subtitle" id="album-subtitle">Summer in Okinawa · 2025</p>
+                <p class="album-catchphrase" id="album-catchphrase">"Where turquoise waters meet ancient traditions"</p>
+            </header>
+
+            <!-- Photo Gallery -->
+            <div class="photo-gallery" id="photo-gallery">
+                <!-- Photos will be dynamically loaded -->
+            </div>
+
+             <!-- Close Album Section -->
+            <div class="album-close-section">
+                <button class="close-album-button" onclick="backToGallery()">
+                    <span>✕</span> Close Album
+                </button>
+            </div>
+        </div>
+    </div>
+            
+        
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+</body>
+</html>

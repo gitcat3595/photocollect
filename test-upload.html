@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Upload - Family Albums</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #F5F1E8;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #1A1511;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .test-section h2 {
+            color: #2C2416;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .upload-zone {
+            border: 3px dashed #B8975A;
+            padding: 60px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #FEFDFB;
+        }
+        
+        .upload-zone:hover {
+            background: rgba(184, 151, 90, 0.1);
+            border-color: #2C2416;
+        }
+        
+        .upload-zone.dragover {
+            background: rgba(184, 151, 90, 0.2);
+            border-color: #2C2416;
+            transform: scale(1.02);
+        }
+        
+        button {
+            background: #2C2416;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        
+        button:hover {
+            background: #B8975A;
+            color: #1A1511;
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border: 2px solid #B8975A;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-item button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 18px;
+        }
+        
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .log {
+            background: #1a1511;
+            color: #B8975A;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        
+        .log-entry {
+            margin: 3px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Upload Functionality Test</h1>
+    
+    <!-- Test 1: Simple Upload -->
+    <div class="test-section">
+        <h2>Test 1: Click to Upload</h2>
+        <div class="upload-zone" id="upload1">
+            <p>📁 Click here to browse files</p>
+        </div>
+        <input type="file" id="file1" accept="image/*" multiple>
+        <div id="preview1" class="preview-grid"></div>
+        <div id="status1"></div>
+    </div>
+    
+    <!-- Test 2: Drag & Drop -->
+    <div class="test-section">
+        <h2>Test 2: Drag & Drop</h2>
+        <div class="upload-zone" id="upload2">
+            <p>🎯 Drag and drop images here</p>
+        </div>
+        <input type="file" id="file2" accept="image/*" multiple>
+        <div id="preview2" class="preview-grid"></div>
+        <div id="status2"></div>
+    </div>
+    
+    <!-- Test 3: LocalStorage -->
+    <div class="test-section">
+        <h2>Test 3: LocalStorage Check</h2>
+        <button onclick="checkLocalStorage()">Check Saved Albums</button>
+        <button onclick="clearLocalStorage()">Clear All Albums</button>
+        <div id="storage-info" class="status info" style="display:none;"></div>
+    </div>
+    
+    <!-- Console Log -->
+    <div class="test-section">
+        <h2>Console Log</h2>
+        <div id="console-log" class="log"></div>
+    </div>
+    
+    <script>
+        // Custom console
+        const logDiv = document.getElementById('console-log');
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = args.map(a => 
+                typeof a === 'object' ? JSON.stringify(a) : String(a)
+            ).join(' ');
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        };
+        
+        console.log('=== TEST PAGE LOADED ===');
+        
+        // Test 1: Simple Upload
+        setupTest(1);
+        
+        // Test 2: Drag & Drop
+        setupTest(2);
+        
+        function setupTest(num) {
+            const uploadZone = document.getElementById(`upload${num}`);
+            const fileInput = document.getElementById(`file${num}`);
+            const preview = document.getElementById(`preview${num}`);
+            const status = document.getElementById(`status${num}`);
+            
+            let photos = [];
+            
+            // Click to upload
+            uploadZone.addEventListener('click', () => {
+                console.log(`Test ${num}: Upload zone clicked`);
+                fileInput.click();
+            });
+            
+            // File selected
+            fileInput.addEventListener('change', (e) => {
+                console.log(`Test ${num}: Files selected:`, e.target.files.length);
+                handleFiles(e.target.files);
+            });
+            
+            // Drag events
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+            });
+            
+            uploadZone.addEventListener('dragover', () => {
+                uploadZone.classList.add('dragover');
+            });
+            
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.classList.remove('dragover');
+            });
+            
+            uploadZone.addEventListener('drop', (e) => {
+                uploadZone.classList.remove('dragover');
+                console.log(`Test ${num}: Files dropped:`, e.dataTransfer.files.length);
+                handleFiles(e.dataTransfer.files);
+            });
+            
+            function handleFiles(files) {
+                console.log(`Test ${num}: Processing ${files.length} files`);
+                
+                if (files.length === 0) {
+                    showStatus('No files selected', 'error');
+                    return;
+                }
+                
+                showStatus(`Processing ${files.length} file(s)...`, 'info');
+                
+                Array.from(files).forEach((file, index) => {
+                    console.log(`Test ${num}: File ${index + 1}:`, file.name, file.type);
+                    
+                    if (!file.type.startsWith('image/')) {
+                        showStatus(`"${file.name}" is not an image`, 'error');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    
+                    reader.onload = (e) => {
+                        console.log(`Test ${num}: File loaded:`, file.name);
+                        
+                        const photo = {
+                            id: Date.now() + Math.random(),
+                            name: file.name,
+                            dataUrl: e.target.result
+                        };
+                        
+                        photos.push(photo);
+                        addPreview(photo);
+                        showStatus(`✓ ${photos.length} photo(s) uploaded`, 'success');
+                    };
+                    
+                    reader.onerror = () => {
+                        console.error(`Test ${num}: Failed to read:`, file.name);
+                        showStatus(`Failed to read "${file.name}"`, 'error');
+                    };
+                    
+                    reader.readAsDataURL(file);
+                });
+                
+                fileInput.value = '';
+            }
+            
+            function addPreview(photo) {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+                div.innerHTML = `
+                    <img src="${photo.dataUrl}" alt="${photo.name}">
+                    <button onclick="removePreview${num}('${photo.id}')">×</button>
+                `;
+                preview.appendChild(div);
+            }
+            
+            window[`removePreview${num}`] = function(id) {
+                photos = photos.filter(p => p.id != id);
+                const item = preview.querySelector(`[onclick*="${id}"]`).parentElement;
+                item.remove();
+                showStatus(`Photo removed. ${photos.length} remaining`, 'info');
+            };
+            
+            function showStatus(message, type) {
+                status.textContent = message;
+                status.className = `status ${type}`;
+                status.style.display = 'block';
+            }
+        }
+        
+        // LocalStorage functions
+        function checkLocalStorage() {
+            console.log('Checking localStorage...');
+            const albums = JSON.parse(localStorage.getItem('familyAlbums') || '[]');
+            const info = document.getElementById('storage-info');
+            
+            if (albums.length === 0) {
+                info.textContent = '📭 No albums saved yet';
+                info.className = 'status info';
+            } else {
+                info.textContent = `📚 ${albums.length} album(s) saved:\n${albums.map((a, i) => 
+                    `${i + 1}. ${a.title} (${a.photos.length} photos)`
+                ).join('\n')}`;
+                info.className = 'status success';
+            }
+            info.style.display = 'block';
+            
+            console.log('Albums in localStorage:', albums.length);
+            albums.forEach((a, i) => {
+                console.log(`Album ${i + 1}:`, a.title, `(${a.photos.length} photos)`);
+            });
+        }
+        
+        function clearLocalStorage() {
+            if (confirm('Clear all saved albums?')) {
+                localStorage.removeItem('familyAlbums');
+                const info = document.getElementById('storage-info');
+                info.textContent = '🗑️ All albums cleared';
+                info.className = 'status info';
+                info.style.display = 'block';
+                console.log('localStorage cleared');
+            }
+        }
+    </script>
+</body>
+</html>

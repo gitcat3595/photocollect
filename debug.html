@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - LocalStorage Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1511;
+            color: #B8975A;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #B8975A;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .section {
+            background: #2C2416;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #B8975A;
+            border-radius: 4px;
+        }
+        
+        button {
+            background: #B8975A;
+            color: #1a1511;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+        
+        button:hover {
+            background: #d4a86a;
+        }
+        
+        .log {
+            background: #0a0805;
+            padding: 15px;
+            border-radius: 3px;
+            margin-top: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        
+        .log-entry {
+            margin: 3px 0;
+            padding: 3px;
+        }
+        
+        .log-entry.success { color: #4ade80; }
+        .log-entry.error { color: #ef4444; }
+        .log-entry.warning { color: #fbbf24; }
+        .log-entry.info { color: #60a5fa; }
+        
+        pre {
+            background: #0a0805;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            margin-top: 10px;
+            font-size: 11px;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+        
+        .status.ok { background: #4ade80; color: #000; }
+        .status.error { background: #ef4444; color: #fff; }
+        .status.warn { background: #fbbf24; color: #000; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 LocalStorage Debug Tool</h1>
+        
+        <!-- Status -->
+        <div class="section">
+            <h2>📊 Current Status</h2>
+            <div id="status"></div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="section">
+            <h2>🎮 Actions</h2>
+            <button onclick="checkStorage()">Check Storage</button>
+            <button onclick="testSave()">Test Save</button>
+            <button onclick="clearStorage()">Clear All</button>
+            <button onclick="exportData()">Export Data</button>
+            <button onclick="importData()">Import Data</button>
+        </div>
+        
+        <!-- Albums -->
+        <div class="section">
+            <h2>📚 Saved Albums</h2>
+            <div id="albums"></div>
+        </div>
+        
+        <!-- Log -->
+        <div class="section">
+            <h2>📝 Log</h2>
+            <div id="log" class="log"></div>
+        </div>
+    </div>
+    
+    <script>
+        const logDiv = document.getElementById('log');
+        
+        function log(message, type = 'info') {
+            console.log(message);
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function checkStorage() {
+            log('=== Checking localStorage ===', 'info');
+            
+            try {
+                const data = localStorage.getItem('familyAlbums');
+                
+                if (!data) {
+                    log('No data found in localStorage', 'warning');
+                    document.getElementById('status').innerHTML = '<span class="status warn">Empty</span>';
+                    document.getElementById('albums').innerHTML = '<p>No albums saved</p>';
+                    return;
+                }
+                
+                const albums = JSON.parse(data);
+                log(`Found ${albums.length} album(s)`, 'success');
+                
+                const dataSize = (data.length / 1024).toFixed(2);
+                log(`Data size: ${dataSize}KB`, 'info');
+                
+                document.getElementById('status').innerHTML = `
+                    <span class="status ok">${albums.length} Albums</span>
+                    <span class="status ok">${dataSize}KB</span>
+                `;
+                
+                // Display albums
+                let html = '';
+                albums.forEach((album, i) => {
+                    html += `
+                        <div style="background: #0a0805; padding: 10px; margin: 5px 0; border-radius: 3px;">
+                            <strong>${i + 1}. ${album.title}</strong><br>
+                            <small>ID: ${album.id}</small><br>
+                            <small>Photos: ${album.photos.length}</small><br>
+                            <small>Created: ${new Date(album.createdAt).toLocaleString()}</small>
+                        </div>
+                    `;
+                });
+                
+                document.getElementById('albums').innerHTML = html;
+                
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                document.getElementById('status').innerHTML = '<span class="status error">Error</span>';
+            }
+        }
+        
+        function testSave() {
+            log('=== Testing save functionality ===', 'info');
+            
+            try {
+                const testAlbum = {
+                    id: 'test-' + Date.now(),
+                    title: 'TEST ALBUM',
+                    catchphrase: '"Test catchphrase"',
+                    country: 'Japan',
+                    year: '2025',
+                    season: 'Summer',
+                    subtitle: 'Summer in Japan · 2025',
+                    photos: [
+                        {
+                            id: 1,
+                            name: 'test.jpg',
+                            dataUrl: createTestImage()
+                        }
+                    ],
+                    createdAt: new Date().toISOString()
+                };
+                
+                log('Created test album', 'info');
+                
+                let albums = JSON.parse(localStorage.getItem('familyAlbums') || '[]');
+                albums.push(testAlbum);
+                
+                const dataString = JSON.stringify(albums);
+                const dataSize = (dataString.length / 1024).toFixed(2);
+                log(`Data size: ${dataSize}KB`, 'info');
+                
+                localStorage.setItem('familyAlbums', dataString);
+                log('✓ Test album saved successfully!', 'success');
+                
+                checkStorage();
+                
+            } catch (error) {
+                log(`✗ Save failed: ${error.message}`, 'error');
+            }
+        }
+        
+        function createTestImage() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 200;
+            canvas.height = 200;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#B8975A';
+            ctx.fillRect(0, 0, 200, 200);
+            
+            ctx.fillStyle = '#1a1511';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('TEST', 100, 100);
+            
+            return canvas.toDataURL('image/jpeg', 0.8);
+        }
+        
+        function clearStorage() {
+            if (confirm('Clear all albums?')) {
+                localStorage.removeItem('familyAlbums');
+                log('All albums cleared', 'warning');
+                checkStorage();
+            }
+        }
+        
+        function exportData() {
+            const data = localStorage.getItem('familyAlbums');
+            if (!data) {
+                alert('No data to export');
+                return;
+            }
+            
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `family-albums-${Date.now()}.json`;
+            a.click();
+            
+            log('Data exported', 'success');
+        }
+        
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = (e) => {
+                    try {
+                        const data = e.target.result;
+                        JSON.parse(data); // Validate JSON
+                        localStorage.setItem('familyAlbums', data);
+                        log('Data imported successfully', 'success');
+                        checkStorage();
+                    } catch (error) {
+                        log(`Import failed: ${error.message}`, 'error');
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+        
+        // Auto-check on load
+        window.addEventListener('load', () => {
+            log('Debug tool loaded', 'info');
+            checkStorage();
+        });
+    </script>
+</body>
+</html>

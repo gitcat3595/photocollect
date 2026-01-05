@@ -1,0 +1,5 @@
+[33m1cf7bc7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Fix photo display with inline styles
+[33m48ac9e8[m Fix album functionality :wq :wq
+[33m6d76213[m Fix album click handlers and 4:5 photo ratio
+[33m33650cf[m UI improvements: caption removal, landscape detection
+[33m2fead4b[m Initial commit
