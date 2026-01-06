@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.style.animation = '';
             }, 500);
             
-            showTemporaryMessage(element, 'カバーに設定');
+            showTemporaryMessage(element, 'SELECT');
         }
     }
     
