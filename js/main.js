@@ -84,18 +84,18 @@ document.addEventListener('DOMContentLoaded', () => {
 function loadCustomAlbums() {
     const customAlbums = JSON.parse(localStorage.getItem('familyAlbums')) || [];
     console.log('[MAIN] Loading custom albums:', customAlbums.length);
-    
+
     if (customAlbums.length === 0) {
         console.log('[MAIN] No custom albums found');
         return;
     }
-    
+
     const swiperWrapper = document.querySelector('.swiper-wrapper');
     if (!swiperWrapper) {
         console.error('[MAIN] Swiper wrapper not found');
         return;
     }
-    
+
     // Add custom albums to albumsData and DOM
     customAlbums.forEach(album => {
         // Add to albumsData
@@ -109,7 +109,7 @@ function loadCustomAlbums() {
                 caption: album.date || `Photo ${index + 1}`
             }))
         };
-        
+
         // Create slide HTML
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
@@ -124,10 +124,10 @@ function loadCustomAlbums() {
                 </div>
             </div>
         `;
-        
+
         // Insert before the first existing slide (so custom albums appear first)
         swiperWrapper.insertBefore(slide, swiperWrapper.firstChild);
-        
+
         console.log('[MAIN] Added album:', album.title);
     });
 }
@@ -225,7 +225,7 @@ function initializeCarousel() {
             }
         }
     });
-       
+
 }
 
 // ========================================
@@ -270,14 +270,14 @@ let longPressTarget = null;
 document.addEventListener('mousedown', (e) => {
     const albumCover = e.target.closest('.album-cover');
     if (!albumCover) return;
-    
+
     const albumId = albumCover.getAttribute('data-album-id');
-    
+
     // Skip if it's a static album
     if (['yaeyama', 'alps', 'tuscany', 'kyoto'].includes(albumId)) {
         return;
     }
-    
+
     longPressTarget = albumCover;
     longPressTimer = setTimeout(() => {
         showDeleteConfirmation(albumId, albumCover);
@@ -304,14 +304,14 @@ document.addEventListener('mousemove', () => {
 document.addEventListener('touchstart', (e) => {
     const albumCover = e.target.closest('.album-cover');
     if (!albumCover) return;
-    
+
     const albumId = albumCover.getAttribute('data-album-id');
-    
+
     // Skip if it's a static album
     if (['yaeyama', 'alps', 'tuscany', 'kyoto'].includes(albumId)) {
         return;
     }
-    
+
     longPressTarget = albumCover;
     longPressTimer = setTimeout(() => {
         showDeleteConfirmation(albumId, albumCover);
@@ -336,7 +336,7 @@ document.addEventListener('touchmove', () => {
 
 function showDeleteConfirmation(albumId, albumCover) {
     const albumTitle = albumCover.querySelector('.album-title')?.textContent || 'this album';
-    
+
     if (confirm(`Delete "${albumTitle}"?\n\nThis action cannot be undone.`)) {
         deleteAlbum(albumId, albumCover);
     }
@@ -344,26 +344,26 @@ function showDeleteConfirmation(albumId, albumCover) {
 
 function deleteAlbum(albumId, albumCover) {
     console.log('[MAIN] Deleting album:', albumId);
-    
+
     // Remove from localStorage
     const customAlbums = JSON.parse(localStorage.getItem('familyAlbums')) || [];
     const filteredAlbums = customAlbums.filter(album => album.id !== albumId);
     localStorage.setItem('familyAlbums', JSON.stringify(filteredAlbums));
-    
+
     // Remove from DOM
     const slide = albumCover.closest('.swiper-slide');
     if (slide) {
         slide.remove();
-        
+
         // Update Swiper
         if (swiperInstance) {
             swiperInstance.update();
         }
     }
-    
+
     // Remove from albumsData
     delete albumsData[albumId];
-    
+
     console.log('[MAIN] Album deleted successfully');
 }
 
@@ -380,35 +380,35 @@ function deleteAlbum(albumId, albumCover) {
 
 function openAlbum(albumId) {
     if (!albumsData[albumId]) return;
-    
+
     currentAlbum = albumsData[albumId];
-    
+
     // Show book opening animation
     const overlay = document.querySelector('.book-opening-overlay');
     overlay.classList.add('active');
-    
+
     // Wait for animation to complete
     setTimeout(() => {
         // Hide top page
         document.getElementById('top-page').classList.remove('active');
-        
+
         // Update album content
         updateAlbumContent(currentAlbum);
-        
+
         // Show album page
         document.getElementById('album-page').classList.add('active');
-        
+
         // Remove overlay
         overlay.classList.remove('active');
-        
+
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'instant' });
-        
+
         // Add parallax effect to photos
         setTimeout(() => {
             addParallaxEffect();
         }, 100);
-        
+
     }, 1200);
 }
 
@@ -421,11 +421,38 @@ function updateAlbumContent(album) {
     document.getElementById('album-title').textContent = album.title;
     document.getElementById('album-subtitle').textContent = album.subtitle;
     document.getElementById('album-catchphrase').textContent = album.catchphrase;
-    
+
+    function updateAlbumContent(album) {
+        // Update header
+        document.getElementById('album-title').textContent = album.title;
+        document.getElementById('album-subtitle').textContent = album.subtitle;
+        document.getElementById('album-catchphrase').textContent = album.catchphrase;
+
+        // === レイアウトモードを適用 ===
+        const albumContent = document.querySelector('.album-content');
+        albumContent.classList.remove('layout-portrait', 'layout-landscape');
+
+        if (album.layoutMode === 'landscape') {
+            albumContent.classList.add('layout-landscape');
+            console.log('Applied landscape layout');
+        } else {
+            albumContent.classList.add('layout-portrait');
+            console.log('Applied portrait layout');
+        }
+
+        // Update photo gallery
+        const gallery = document.getElementById('photo-gallery');
+        gallery.innerHTML = '';
+        album.photos.forEach((photo, index) => {
+            const photoBlock = createPhotoBlock(photo, index);
+            gallery.appendChild(photoBlock);
+        });
+    }
+
     // Update photo gallery
     const gallery = document.getElementById('photo-gallery');
     gallery.innerHTML = '';
-    
+
     album.photos.forEach((photo, index) => {
         const photoBlock = createPhotoBlock(photo, index);
         gallery.appendChild(photoBlock);
@@ -440,28 +467,28 @@ function createPhotoBlock(photo, index) {
     const block = document.createElement('div');
     block.className = 'photo-block';
     block.style.animationDelay = `${index * 0.1}s`;
-    
+
     const wrapper = document.createElement('div');
     wrapper.className = 'photo-wrapper';
-    
+
     const img = document.createElement('img');
     img.src = photo.url;
     img.alt = photo.caption;
     img.loading = 'lazy';
-    
+
     // Add error handling for missing images
-    img.onerror = function() {
+    img.onerror = function () {
         this.src = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=800&fit=crop';
     };
-    
+
     const caption = document.createElement('p');
     caption.className = 'photo-caption';
     caption.textContent = photo.caption;
-    
+
     wrapper.appendChild(img);
     block.appendChild(wrapper);
     // block.appendChild(caption); //今はキャプション非表示
-    
+
     return block;
 }
 
@@ -473,20 +500,20 @@ function backToGallery() {
     // Fade out album page
     const albumPage = document.getElementById('album-page');
     albumPage.style.opacity = '0';
-    
+
     setTimeout(() => {
         albumPage.classList.remove('active');
         albumPage.style.opacity = '1';
-        
+
         // Show top page
         document.getElementById('top-page').classList.add('active');
-        
+
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        
+
         // Reset current album
         currentAlbum = null;
-        
+
     }, 400);
 }
 
@@ -496,17 +523,17 @@ function backToGallery() {
 
 function addParallaxEffect() {
     const photos = document.querySelectorAll('.photo-wrapper img');
-    
+
     window.addEventListener('scroll', () => {
         photos.forEach(photo => {
             const rect = photo.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-            
+
             // Check if photo is in viewport
             if (rect.top < windowHeight && rect.bottom > 0) {
                 const scrollPercent = (windowHeight - rect.top) / (windowHeight + rect.height);
                 const translateY = (scrollPercent - 0.5) * 30;
-                
+
                 photo.style.transform = `scale(1.1) translateY(${translateY}px)`;
             }
         });
@@ -541,7 +568,7 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && currentAlbum) {
         backToGallery();
     }
-    
+
     // Left/Right arrows - navigate carousel (when on top page)
     if (!currentAlbum && swiperInstance) {
         if (e.key === 'ArrowLeft') {
@@ -571,7 +598,7 @@ document.addEventListener('touchend', (e) => {
 function handleSwipeGesture() {
     const swipeThreshold = 50;
     const diff = touchStartX - touchEndX;
-    
+
     // Only handle swipes when viewing album
     if (currentAlbum && Math.abs(diff) > swipeThreshold) {
         if (diff > 0) {
@@ -601,7 +628,7 @@ if ('IntersectionObserver' in window) {
             }
         });
     });
-    
+
     // Observe all lazy images
     document.addEventListener('DOMContentLoaded', () => {
         const lazyImages = document.querySelectorAll('img[data-src]');
