@@ -32,7 +32,7 @@
                 
                 <!-- Album Title -->
                 <div class="form-section">
-                    <label for="album-title" class="form-label">Album Title</label>
+                    <label for="album-title" class="form-label">Title</label>
                     <input 
                         type="text" 
                         id="album-title" 
@@ -41,12 +41,12 @@
                         placeholder="Yaeyama Islands"
                         required
                     >
-                    <p class="form-hint">The main title of your album</p>
+                    <p class="form-hint">The title of your collection</p>
                 </div>
 
-                <!-- Catchphrase -->
+                <!-- Tagline -->
                 <div class="form-section">
-                    <label for="catchphrase" class="form-label">Catchphrase</label>
+                    <label for="catchphrase" class="form-label">Tagline</label>
                     <input 
                         type="text" 
                         id="catchphrase" 
@@ -58,19 +58,20 @@
                     <p class="form-hint">A poetic description in quotes</p>
                 </div>
 
-                <!-- Location & Date Row -->
+                <!-- Destination & Date Row -->
                 <div class="form-row">
                     <!-- Country -->
                     <div class="form-section form-half">
-                        <label for="country" class="form-label">Country</label>
+                        <label for="country" class="form-label">Destination</label>
                         <input 
                             type="text" 
                             id="country" 
                             name="country"
                             class="form-input" 
-                            placeholder="Japan"
+                            placeholder="Okinawa, Japan"
                             required
                         >
+                        <p class="form-hint"> City, Country or region</p>
                     </div>
 
                     <!-- Year -->
@@ -89,18 +90,18 @@
                     </div>
                 </div>
 
-                <!-- Season/Month -->
+                <!-- Season/Month(Optional) -->
                 <div class="form-section">
-                    <label for="season" class="form-label">Season or Month</label>
+                    <label for="season" class="form-label">Season</label>
                     <input 
                         type="text" 
                         id="season" 
                         name="season"
                         class="form-input" 
                         placeholder="Summer"
-                        required
+                        
                     >
-                    <p class="form-hint">e.g., Summer, December, Spring</p>
+                    <p class="form-hint">Optional; Summer, December, 4-5 July</p>
                 </div>
 
                 <!-- Date -->
@@ -161,7 +162,13 @@
 
         <!-- Footer -->
         <footer class="create-footer">
-            <p>Family Albums — Timeless Memories, Elegantly Preserved</p>
+            <p>PhotoCollect is thoughtfully crafted by <a href="https://x.com/kellyangyang" target="_blank" rel="noopener noreferrer" class="footer-link">kellyangyang</a> 
+            <a href="https://x.com/kellyangyang" target="_blank" rel="noopener noreferrer" class="footer-x-link" aria-label="Follow on X">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+            </a>
+            </p>
         </footer>
     </div>
 
