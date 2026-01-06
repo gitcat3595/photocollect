@@ -734,3 +734,33 @@ body {
     transform: translateY(-2px);
 }
 /* ========== ANIMATIONS ========== */
+
+/* ========== FOOTER LINK STYLES ========== */
+.site-credit .footer-link {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    font-style: italic;
+}
+
+.site-credit .footer-link:hover {
+    color: var(--color-accent-gold);
+}
+
+.footer-x-link {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    color: var(--color-text-primary);
+    transition: color var(--transition-fast);
+    text-decoration: none;
+}
+
+.footer-x-link svg {
+    width: 16px;
+    height: 16px;
+}
+
+.footer-x-link:hover {
+    color: var(--color-accent-gold);
+}
