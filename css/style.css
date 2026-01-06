@@ -375,6 +375,13 @@ body {
     transition: color var(--transition-fast);
 }
 
+/* Center back button in album detail page */
+.album-content .back-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
 .back-button:hover,
 .back-link:hover {
     color: var(--color-text-primary);
