@@ -247,6 +247,12 @@
     cursor: pointer;
     transition: all var(--transition-medium);
     margin-bottom: var(--spacing-sm);
+    outline: none;
+}
+
+.browse-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(184, 151, 90, 0.3);
 }
 
 .browse-button:hover {
