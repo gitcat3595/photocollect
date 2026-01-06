@@ -455,15 +455,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Get form data
+        const seasonValue = document.getElementById('season') 
+            ? document.getElementById('season').value.trim() 
+            : '';
+        
         const albumData = {
             id: `album-${Date.now()}`,
             title: document.getElementById('album-title').value.trim().toUpperCase(),
             catchphrase: document.getElementById('catchphrase').value.trim(),
             country: document.getElementById('country').value.trim(),
             year: document.getElementById('year').value.trim(),
-            season: document.getElementById('season').value.trim(),
-            date: document.getElementById('date').value.trim(),
-            photos: orderedPhotos, // 並び替え済み
+            season: seasonValue,
+            photos: orderedPhotos,
             createdAt: new Date().toISOString()
         };
         
@@ -473,12 +476,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Create subtitle
-        albumData.subtitle = albumData.date 
-            ? `${albumData.country} · ${albumData.date}`
-            : `${albumData.season} in ${albumData.country} · ${albumData.year}`;
-        
-        console.log('Album data:', albumData);
-        
+        if (albumData.season) {
+            albumData.subtitle = `${albumData.season} in ${albumData.country} · ${albumData.year}`;
+        } else {
+            albumData.subtitle = `${albumData.country} · ${albumData.year}`;
+        }
+
         // Show loading
         submitButton.disabled = true;
         submitButton.textContent = 'Creating...';
