@@ -562,7 +562,7 @@ body {
     }
     
     
-    /* ========== CAROUSEL SECTION ========== */
+/* ========== CAROUSEL SECTION ========== */
 .carousel-section {
     padding: var(--spacing-xl) 0;
     background: linear-gradient(
@@ -695,48 +695,7 @@ body {
     }
 }
 
-@media (min-width: 1025px) {
-    .site-footer {
-        text-align: center !important;
-        padding: var(--spacing-lg) var(--spacing-md) !important;
-        margin-top: var(--spacing-xl) !important;
-    }
-    
-    .site-credit {
-        font-family: var(--font-serif-italic) !important;
-        font-size: 14px !important;
-        font-style: italic !important;
-        font-weight: 400 !important;
-        color: var(--color-text-secondary) !important;
-        letter-spacing: 0.02em !important;
-    }
-    
-    .site-credit .footer-link,
-    .footer-x-link {
-        color: var(--color-text-primary) !important;
-        text-decoration: none !important;
-        transition: color var(--transition-fast) !important;
-    }
-    
-    .site-credit .footer-link:hover,
-    .footer-x-link:hover {
-        color: var(--color-accent-gold) !important;
-    }
-}
 
-
-/* ========== PRINT STYLES ========== */
-@media print {
-    .back-button,
-    .create-button,
-    .cta-section {
-        display: none;
-    }
-    
-    body {
-        background: white;
-    }
-}
 /* ========== CLOSE ALBUM BUTTON ========== */
 .album-close-section {
     text-align: center;
@@ -816,8 +775,6 @@ body {
     color: var(--color-accent-gold);
 }
 
-
-
 /* Apply to both site-footer and create-footer */
 .site-footer,
 .create-footer {
@@ -836,32 +793,36 @@ body {
     letter-spacing: 0.02em;
 }
 
-/* ========== PC SPECIFIC (Desktop) ========== */
-@media (min-width: 1025px) {
-    .site-footer {
+/* ========== PC SPECIFIC (Desktop 770px+) ========== */
+@media (min-width: 770px) {
+    .site-footer,
+    .create-footer {
         text-align: center;
-        padding: var(--spacing-lg) var(--spacing-md);
         margin-top: var(--spacing-xl);
     }
     
-    .site-credit {
-        font-family: var(--font-serif-italic);
-        font-size: 14px;
-        font-style: italic;
-        font-weight: 400;
-        color: var(--color-text-secondary);
-        letter-spacing: 0.02em;
+    .site-credit,
+    .create-footer p {
+        color: var(--color-text-primary);
     }
     
     .site-credit .footer-link,
-    .footer-x-link {
+    .footer-x-link,
+    .photocollect-link {
         color: var(--color-text-primary);
-        text-decoration: none;
-        transition: color var(--transition-fast);
+    }
+}
+
+
+/* ========== PRINT STYLES ========== */
+@media print {
+    .back-button,
+    .create-button,
+    .cta-section {
+        display: none;
     }
     
-    .site-credit .footer-link:hover,
-    .footer-x-link:hover {
-        color: var(--color-accent-gold);
+    body {
+        background: white;
     }
 }
