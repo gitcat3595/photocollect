@@ -121,7 +121,7 @@ body {
 }
 
 .swiper-slide {
-    width: 240px;
+    width: 280px;
     height: 350px;
     display: flex;
     align-items: center;
@@ -137,7 +137,7 @@ body {
 
 .album-cover {
     width: 90%;
-    height: 90%;
+    aspect-ration: 4 / 5;
     cursor: pointer;
     transition: transform var(--transition-medium);
     position: relative;
@@ -202,6 +202,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position : center center;
     transition: transform var(--transition-slow);
 }
 
@@ -536,7 +537,7 @@ body {
     
     .swiper-slide {
         width: 280px;
-        height: 420px;
+        height: 350px;
     }
 }
 
