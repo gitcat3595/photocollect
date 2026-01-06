@@ -227,8 +227,11 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 40%;  /* 55% → 40% */
-    padding: 150px 32px 48px 32px;
+    padding: 0 32px 48px 32px;  /* Remove top padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;  /* Align to bottom */
+    min-height: 40%;  /* height → min-height */
     background: linear-gradient(
         to top,
         rgba(26, 21, 17, 0.85) 0%,
@@ -236,7 +239,7 @@ body {
         rgba(26, 21, 17, 0.2) 80%,
         transparent 100%
     );
-
+    color: #fff;
 }
 
 .album-title {
@@ -264,7 +267,7 @@ body {
 .swiper-slide-shadow-left,
 .swiper-slide-shadow-right {
     opacity: 0.1 !important;
-    
+    width: 50% !important;  
 }
 
 
@@ -673,11 +676,16 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    padding: var(--spacing-md);
+    padding: 0 32px 48px 32px;  /* Remove top padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;  /* Align to bottom */
+    min-height: 40%;  /* height → min-height */
     background: linear-gradient(
         to top,
-        rgba(26, 21, 17, 0.9) 0%,
-        rgba(26, 21, 17, 0.6) 60%,
+        rgba(26, 21, 17, 0.85) 0%,
+        rgba(26, 21, 17, 0.5) 50%,
+        rgba(26, 21, 17, 0.2) 80%,
         transparent 100%
     );
     color: #fff;
