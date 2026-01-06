@@ -19,7 +19,14 @@
     padding-bottom: var(--spacing-lg);
 }
 
+/* ========== COMMON HEADER (for all pages except top) ========== */
+.back-button,
 .back-link {
+    position: fixed;
+    top: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -27,19 +34,25 @@
     font-size: 14px;
     letter-spacing: 0.05em;
     color: var(--color-text-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 12px 0;
     text-decoration: none;
-    margin-bottom: var(--spacing-md);
     transition: color var(--transition-fast);
 }
 
+.back-button:hover,
 .back-link:hover {
     color: var(--color-text-primary);
 }
 
+.back-button svg,
 .back-link svg {
     transition: transform var(--transition-fast);
 }
 
+.back-button:hover svg,
 .back-link:hover svg {
     transform: translateX(-4px);
 }
@@ -408,21 +421,6 @@
     border-color: var(--color-accent-gold);
 }
 
-/* ========== FOOTER ========== */
-.create-footer {
-    max-width: 800px;
-    margin: var(--spacing-xl) auto 0;
-    text-align: center;
-    padding-top: var(--spacing-lg);
-    border-top: 1px solid var(--color-accent-gold);
-}
-
-.create-footer p {
-    font-family: var(--font-serif-italic);
-    font-size: 14px;
-    font-style: italic;
-    color: var(--color-text-secondary);
-}
 
 /* ========== ANIMATIONS ========== */
 @keyframes fadeInScale {
@@ -577,33 +575,3 @@
     }
 }
 
-/* ========== FOOTER LINK STYLES ========== */
-
-.create-footer .footer-link {
-    color: var(--color-text-primary);
-    text-decoration: none;
-    transition: color var(--transition-fast);
-    font-style: italic;
-}
-
-.create-footer .footer-link:hover {
-    color: var(--color-accent-gold);
-}
-
-.create-footer .footer-x-link {
-    display: inline-flex;
-    align-items: center;
-    margin-left: 8px;
-    color: var(--color-text-primary);
-    transition: color var(--transition-fast);
-    text-decoration: none;
-}
-
-.create-footer .footer-x-link svg {
-    width: 16px;
-    height: 16px;
-}
-
-.create-footer .footer-x-link:hover {
-    color: var(--color-accent-gold);
-}
