@@ -22,7 +22,6 @@
 /* ========== COMMON HEADER (for all pages except top) ========== */
 .back-button,
 .back-link {
-    position: fixed;
     top: var(--spacing-md);
     left: 50%;
     transform: translateX(-50%);
