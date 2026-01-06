@@ -349,6 +349,7 @@ body {
     margin: 0 auto;
     padding: var(--spacing-xl) var(--spacing-md);
     animation: fadeIn 0.8s ease-out;
+    text-align: center,
 }
 
 
@@ -690,6 +691,35 @@ body {
     
     .album-title {
         font-size: clamp(24px, 4vw, 32px);
+    }
+}
+
+@media (min-width: 1025px) {
+    .site-footer {
+        text-align: center !important;
+        padding: var(--spacing-lg) var(--spacing-md) !important;
+        margin-top: var(--spacing-xl) !important;
+    }
+    
+    .site-credit {
+        font-family: var(--font-serif-italic) !important;
+        font-size: 14px !important;
+        font-style: italic !important;
+        font-weight: 400 !important;
+        color: var(--color-text-secondary) !important;
+        letter-spacing: 0.02em !important;
+    }
+    
+    .site-credit .footer-link,
+    .footer-x-link {
+        color: var(--color-text-primary) !important;
+        text-decoration: none !important;
+        transition: color var(--transition-fast) !important;
+    }
+    
+    .site-credit .footer-link:hover,
+    .footer-x-link:hover {
+        color: var(--color-accent-gold) !important;
     }
 }
 
