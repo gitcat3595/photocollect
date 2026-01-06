@@ -773,6 +773,20 @@ body {
     color: var(--color-accent-gold);
 }
 
+.photocollect-link {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    font-style: italic;
+    font-weight: 500;
+}
+
+.photocollect-link:hover {
+    color: var(--color-accent-gold);
+}
+
+
+
 /* Apply to both site-footer and create-footer */
 .site-footer,
 .create-footer {
