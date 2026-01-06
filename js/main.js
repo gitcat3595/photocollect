@@ -245,6 +245,136 @@ function setupAlbumClickHandlers() {
 }
 
 // ========================================
+// ALBUM CLICK HANDLERS
+// ========================================
+
+function setupAlbumClickHandlers() {
+    // Use event delegation for dynamic albums
+    document.addEventListener('click', (e) => {
+        const albumCover = e.target.closest('.album-cover');
+        if (albumCover) {
+            const albumId = albumCover.getAttribute('data-album-id');
+            console.log('[MAIN] Album clicked:', albumId);
+            openAlbum(albumId);
+        }
+    });
+}
+
+// ========================================
+// LONG PRESS DELETE FOR CUSTOM ALBUMS
+// ========================================
+
+let longPressTimer = null;
+let longPressTarget = null;
+
+document.addEventListener('mousedown', (e) => {
+    const albumCover = e.target.closest('.album-cover');
+    if (!albumCover) return;
+    
+    const albumId = albumCover.getAttribute('data-album-id');
+    
+    // Skip if it's a static album
+    if (['yaeyama', 'alps', 'tuscany', 'kyoto'].includes(albumId)) {
+        return;
+    }
+    
+    longPressTarget = albumCover;
+    longPressTimer = setTimeout(() => {
+        showDeleteConfirmation(albumId, albumCover);
+    }, 1000); // 1 second long press
+});
+
+document.addEventListener('mouseup', () => {
+    if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+        longPressTarget = null;
+    }
+});
+
+document.addEventListener('mousemove', () => {
+    if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+        longPressTarget = null;
+    }
+});
+
+// Touch events for mobile
+document.addEventListener('touchstart', (e) => {
+    const albumCover = e.target.closest('.album-cover');
+    if (!albumCover) return;
+    
+    const albumId = albumCover.getAttribute('data-album-id');
+    
+    // Skip if it's a static album
+    if (['yaeyama', 'alps', 'tuscany', 'kyoto'].includes(albumId)) {
+        return;
+    }
+    
+    longPressTarget = albumCover;
+    longPressTimer = setTimeout(() => {
+        showDeleteConfirmation(albumId, albumCover);
+    }, 1000);
+});
+
+document.addEventListener('touchend', () => {
+    if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+        longPressTarget = null;
+    }
+});
+
+document.addEventListener('touchmove', () => {
+    if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+        longPressTarget = null;
+    }
+});
+
+function showDeleteConfirmation(albumId, albumCover) {
+    const albumTitle = albumCover.querySelector('.album-title')?.textContent || 'this album';
+    
+    if (confirm(`Delete "${albumTitle}"?\n\nThis action cannot be undone.`)) {
+        deleteAlbum(albumId, albumCover);
+    }
+}
+
+function deleteAlbum(albumId, albumCover) {
+    console.log('[MAIN] Deleting album:', albumId);
+    
+    // Remove from localStorage
+    const customAlbums = JSON.parse(localStorage.getItem('familyAlbums')) || [];
+    const filteredAlbums = customAlbums.filter(album => album.id !== albumId);
+    localStorage.setItem('familyAlbums', JSON.stringify(filteredAlbums));
+    
+    // Remove from DOM
+    const slide = albumCover.closest('.swiper-slide');
+    if (slide) {
+        slide.remove();
+        
+        // Update Swiper
+        if (swiperInstance) {
+            swiperInstance.update();
+        }
+    }
+    
+    // Remove from albumsData
+    delete albumsData[albumId];
+    
+    console.log('[MAIN] Album deleted successfully');
+}
+
+
+
+
+
+
+
+
+// ========================================
 // OPEN ALBUM WITH BOOK ANIMATION
 // ========================================
 
