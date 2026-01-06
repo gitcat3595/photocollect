@@ -515,14 +515,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Success
             submitButton.classList.remove('loading');
-            submitButton.textContent = '✓ Album Created!';
+            submitButton.textContent = '✓ Ready to browse';
             submitButton.style.backgroundColor = '#B8975A';
             
             console.log('Waiting 1.5s before redirect...');
             
             setTimeout(() => {
-                console.log('Redirecting to index.html');
-                window.location.href = 'index.html';
+                console.log('Redirecting to album');
+                window.location.href = `index.html?albumId=${albumData.id}`;
             }, 1500);
             
         } catch (error) {
