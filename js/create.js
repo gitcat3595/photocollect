@@ -335,7 +335,8 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // Can't remove cover if it's the only photo
                 console.log('Cannot remove cover - only one photo');
-                showTemporaryMessage(element, '最後の写真です');
+                 // Can't remove if only one photo
+
             }
         } else {
             // Set as cover
@@ -351,35 +352,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.style.animation = '';
             }, 500);
             
-            showTemporaryMessage(element, 'SELECT');
+            //Visual feedback only (no message);
         }
     }
     
-    function showTemporaryMessage(element, message) {
-        const msg = document.createElement('div');
-        msg.textContent = message;
-        msg.style.cssText = `
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(26, 21, 17, 0.9);
-            color: #B8975A;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            pointer-events: none;
-            z-index: 100;
-        `;
-        element.style.position = 'relative';
-        element.appendChild(msg);
         
-        setTimeout(() => {
-            msg.remove();
-        }, 1000);
-    }
-    
     // ========================================
     // REMOVE PHOTO (GLOBAL FUNCTION)
     // ========================================
@@ -416,7 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const year = document.getElementById('year').value.trim();
         const season = document.getElementById('season').value.trim();
         
-        const allFilled = title && catchphrase && country && year && season;
+        const allFilled = title && catchphrase && country && year;
         const hasPhotos = uploadedPhotos.length >= MIN_PHOTOS;
         
         console.log('Validation:', { allFilled, hasPhotos, photoCount: uploadedPhotos.length });
@@ -442,9 +419,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================
     // FORM INPUT LISTENERS
     // ========================================
-    document.querySelectorAll('input[required]').forEach(input => {
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', updateSubmitButton);
+     
+    });
+
+    / ========================================
+    // FORM INPUT LISTENERS
+    // ========================================
+    document.querySelectorAll('input').forEach(input => {
         input.addEventListener('input', updateSubmitButton);
     });
+    
+     // Initial button state
+    updateSubmitButton();
     
     // ========================================
     // FORM SUBMIT
@@ -566,8 +554,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Initial button state
-    updateSubmitButton();
-    
+      
     console.log('=== INITIALIZATION COMPLETE ===');
 });
