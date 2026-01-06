@@ -39,9 +39,10 @@
                         name="title"
                         class="form-input" 
                         placeholder="Yaeyama Islands"
+                        autocomplete="off"
                         required
                     >
-                    <p class="form-hint">The title of your collection</p>
+                    <p class="form-hint">Remebering the moment</p>
                 </div>
 
                 <!-- Tagline -->
@@ -53,6 +54,7 @@
                         name="catchphrase"
                         class="form-input" 
                         placeholder="Where turquoise waters meet ancient traditions"
+                        autocomplete="off"
                         required
                     >
                     <p class="form-hint">A poetic description in quotes</p>
@@ -69,6 +71,7 @@
                             name="country"
                             class="form-input" 
                             placeholder="Okinawa, Japan"
+                            autocomplete="off"
                             required
                         >
                         <p class="form-hint"> City, Country or region</p>
@@ -78,13 +81,12 @@
                     <div class="form-section form-half">
                         <label for="year" class="form-label">Year</label>
                         <input 
-                            type="number" 
+                            type="text" 
                             id="year" 
                             name="year"
                             class="form-input" 
                             placeholder="2025"
-                            min="1900"
-                            max="2100"
+                            autocomplete="off"
                             required
                         >
                     </div>
@@ -99,31 +101,20 @@
                         name="season"
                         class="form-input" 
                         placeholder="Summer"
+                        autocomplete="off"
                         
                     >
-                    <p class="form-hint">Optional; Summer, December, 4-5 July</p>
+                    <p class="form-hint">Optional: Summer, December, 4-5 July</p>
                 </div>
 
-                <!-- Date -->
-                <div class="form-section">
-                    <label for="date" class="form-label">Date Range</label>
-                    <input 
-                        type="text" 
-                        id="date" 
-                        name="date"
-                        class="form-input" 
-                        placeholder="June 15-20, 2025"
-                    >
-                    <p class="form-hint">Optional: Specific date range</p>
-                </div>
-
+                
                 <!-- Divider -->
                 <div class="form-divider"></div>
 
                 <!-- Photo Upload Section -->
                 <div class="form-section photo-upload-section">
-                    <label class="form-label">Album Photos</label>
-                    <p class="form-hint photo-hint">Upload 1-12 photos for your album. First photo will be the cover.</p>
+                    <label class="form-label">Moments to capture</label>
+                    <p class="form-hint photo-hint">Selection of 1-12 photos. .</p>
                     
                     <!-- Drag & Drop Area -->
                     <div class="upload-area" id="upload-area">
@@ -134,11 +125,11 @@
                                 <line x1="12" y1="3" x2="12" y2="15"/>
                             </svg>
                         </div>
-                        <h3 class="upload-title">Drop your photos here</h3>
+                        <h3 class="upload-title">Bring your photos here</h3>
                         <p class="upload-text">or</p>
                         <button type="button" class="browse-button" id="browse-button">Browse Files</button>
                         <input type="file" id="file-input" accept="image/*" multiple hidden>
-                        <p class="upload-requirements">JPG, PNG, or WebP • Max 50MB each • 1-12 photos</p>
+                        <p class="upload-requirements">JPG, PNG • 1-12 photos</p>
                     </div>
 
                     <!-- Photo Preview Grid -->
@@ -168,6 +159,8 @@
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                 </svg>
             </a>
+        
+             © 2026 ・ All rights reserved
             </p>
         </footer>
     </div>
