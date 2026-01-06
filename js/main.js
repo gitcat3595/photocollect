@@ -143,7 +143,7 @@ function initializeCarousel() {
         centeredSlides: true,
         slidesPerView: 'auto',
         loop: true,
-        spaceBetween: 20,
+        spaceBetween: 15,
         initialSlide: 1,
         centerInsufficientSlides: true,
 
