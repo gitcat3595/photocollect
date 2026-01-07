@@ -510,7 +510,7 @@ console.log('LAYOUTMODE:', layoutMode, {
             year: document.getElementById('year').value.trim(),
             season: seasonValue,
             photos: orderedPhotos,
-            layoutMode,
+            layoutMode: layoutMode,
             createdAt: new Date().toISOString()
         };
 
