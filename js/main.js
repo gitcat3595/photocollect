@@ -244,8 +244,10 @@ function openAlbum(albumId) {
   }, 1200);
 }
 
-function applyPhotoAspect() {
-  document.documentElement.style.setProperty('--photo-aspect', '16 / 9');
+function applyPhotoAspect(layoutMode) {
+  const aspect = (layoutMode === 'landscape') ? '16 / 9' : '4 / 5';
+  document.documentElement.style.setProperty('--photo-aspect', aspect);
+  console.log('[MAIN] applied --photo-aspect =', aspect, 'layoutMode =', layoutMode);
 }
 
 function renderAlbum(album) {

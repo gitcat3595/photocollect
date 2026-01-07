@@ -1,5 +1,5 @@
 // ========================================
-// PHOTO COLLECT - CREATE (CLEAN)
+// PHOTO COLLECT - CREATE (FIXED)
 // ========================================
 
 let uploadedPhotos = [];
@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('[CREATE] Required elements missing.');
     return;
   }
+
+  // DEBUG (optional)
+  window.__getUploadedPhotos = () => uploadedPhotos;
 
   // ------- UI events -------
   browseButton.addEventListener('click', (e) => {
@@ -51,13 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  uploadArea.addEventListener('dragover', () => {
-    uploadArea.classList.add('dragover');
-  });
-
-  uploadArea.addEventListener('dragleave', () => {
-    uploadArea.classList.remove('dragover');
-  });
+  uploadArea.addEventListener('dragover', () => uploadArea.classList.add('dragover'));
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
 
   uploadArea.addEventListener('drop', (e) => {
     uploadArea.classList.remove('dragover');
@@ -66,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
     handleFiles(files);
   });
 
-  // form inputs -> enable/disable submit
   document.querySelectorAll('input').forEach(input => {
     input.addEventListener('input', updateSubmitButton);
   });
@@ -94,13 +91,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const dataUrl = await readFileAsDataURL(file);
         const compressed = await compressToJpeg(dataUrl);
 
+        // 1px判定は「元画像寸法」でやる
+        const w = compressed.originalWidth;
+        const h = compressed.originalHeight;
+
         uploadedPhotos.push({
           id: `${Date.now()}-${Math.random()}`,
           name: file.name,
           dataUrl: compressed.dataUrl,
-          width: compressed.width,
-          height: compressed.height,
-          orientation: classifyOrientation(compressed.width, compressed.height) // square/portrait/landscape
+          width: w,
+          height: h,
+          orientation: classifyOrientation(w, h) // square/portrait/landscape
         });
 
         addPhotoPreview(uploadedPhotos[uploadedPhotos.length - 1]);
@@ -129,16 +130,13 @@ document.addEventListener('DOMContentLoaded', () => {
       </button>
     `;
 
-    // remove
     div.querySelector('.photo-remove-button').addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       removePhoto(photo.id);
     });
 
-    // double tap/click -> cover
     setupCoverSelect(div);
-
     photoPreviewGrid.appendChild(div);
   }
 
@@ -154,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
       clearTimeout(tapTimeout);
 
       if (delta > 0 && delta < 450) {
-        // double tap
         e.preventDefault();
         setCover(element.dataset.photoId);
         lastTap = 0;
@@ -176,9 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const el = photoPreviewGrid.querySelector(`[data-photo-id="${photoId}"]`);
     if (el) el.remove();
 
-    // ensure there is a cover
-    const hasCover = !!photoPreviewGrid.querySelector('.cover-photo');
-    if (!hasCover) {
+    // ensure cover exists
+    if (!photoPreviewGrid.querySelector('.cover-photo')) {
       const first = photoPreviewGrid.querySelector('.photo-preview-item');
       if (first) first.classList.add('cover-photo');
     }
@@ -216,17 +212,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const coverEl = photoPreviewGrid.querySelector('.cover-photo');
     const coverId = coverEl?.dataset.photoId || null;
 
-    const ordered = [...uploadedPhotos];
+    const orderedPhotos = [...uploadedPhotos];
     if (coverId) {
-      const idx = ordered.findIndex(p => p.id === coverId);
+      const idx = orderedPhotos.findIndex(p => p.id === coverId);
       if (idx > 0) {
-        const cover = ordered.splice(idx, 1)[0];
-        ordered.unshift(cover);
+        const cover = orderedPhotos.splice(idx, 1)[0];
+        orderedPhotos.unshift(cover);
       }
     }
 
-    // auto layoutMode by counts
-    const counts = countOrientations(ordered);
+    // counts + layoutMode (squareはノーカウント)
+    const counts = countOrientations(orderedPhotos);
     const layoutMode = (counts.landscape > counts.portrait) ? 'landscape' : 'portrait';
 
     const season = document.getElementById('season')?.value.trim() || '';
@@ -241,6 +237,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ? `${season} in ${country} · ${year}`
       : `${country} · ${year}`;
 
+    console.log('[CREATE] LAYOUTMODE:', layoutMode, counts);
+
     const albumData = {
       id: `album-${Date.now()}`,
       title,
@@ -249,9 +247,9 @@ document.addEventListener('DOMContentLoaded', () => {
       year,
       season,
       subtitle,
-      layoutMode,         // ← main.js が読む
-      orientationCounts: counts, // ← 確認用（debugに便利）
-      photos: ordered.map(p => ({
+      layoutMode,
+      orientationCounts: counts,
+      photos: orderedPhotos.map(p => ({
         id: p.id,
         name: p.name,
         dataUrl: p.dataUrl,
@@ -262,7 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
       createdAt: new Date().toISOString()
     };
 
-    // save
     try {
       submitButton.disabled = true;
       submitButton.textContent = 'Creating...';
@@ -272,7 +269,6 @@ document.addEventListener('DOMContentLoaded', () => {
       albums.push(albumData);
       setCustomAlbums(albums);
 
-      // redirect -> open album
       setTimeout(() => {
         window.location.href = `index.html?albumId=${albumData.id}`;
       }, 600);
@@ -285,13 +281,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ------- helpers -------
   function getCustomAlbums() {
-    try {
-      return JSON.parse(localStorage.getItem('familyAlbums')) || [];
-    } catch {
-      return [];
-    }
+    try { return JSON.parse(localStorage.getItem('familyAlbums')) || []; }
+    catch { return []; }
   }
 
   function setCustomAlbums(albums) {
@@ -299,7 +291,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// -------- utilities (outside DOMContentLoaded) --------
+// -------- utilities --------
+function classifyOrientation(w, h) {
+  if (w > h) return 'landscape';
+  if (h > w) return 'portrait';
+  return 'square';
+}
+
+function countOrientations(photos) {
+  const counts = { landscape: 0, portrait: 0, square: 0 };
+  photos.forEach(p => {
+    if (p.orientation === 'landscape') counts.landscape++;
+    else if (p.orientation === 'portrait') counts.portrait++;
+    else if (p.orientation === 'square') counts.square++;
+  });
+  return counts;
+}
+
 function readFileAsDataURL(file) {
   return new Promise((resolve, reject) => {
     const r = new FileReader();
@@ -312,13 +320,17 @@ function readFileAsDataURL(file) {
 function compressToJpeg(dataUrl) {
   return new Promise((resolve, reject) => {
     const img = new Image();
+
     img.onload = () => {
+      const originalWidth = img.naturalWidth || img.width;
+      const originalHeight = img.naturalHeight || img.height;
+
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
 
-      let { width, height } = img;
+      let width = originalWidth;
+      let height = originalHeight;
 
-      // resize (keep aspect)
       if (width > height) {
         if (width > MAX_SIDE) {
           height = Math.round(height * (MAX_SIDE / width));
@@ -339,24 +351,15 @@ function compressToJpeg(dataUrl) {
       ctx.drawImage(img, 0, 0, width, height);
 
       const out = canvas.toDataURL('image/jpeg', JPEG_QUALITY);
-      resolve({ dataUrl: out, width, height });
+
+      resolve({
+        dataUrl: out,
+        originalWidth,
+        originalHeight
+      });
     };
+
     img.onerror = reject;
     img.src = dataUrl;
   });
-}
-
-function classifyOrientation(width, height) {
-  if (width === height) return 'square';
-  return (width > height) ? 'landscape' : 'portrait';
-}
-
-function countOrientations(photos) {
-  const counts = { landscape: 0, portrait: 0, square: 0 };
-  photos.forEach(p => {
-    if (p.orientation === 'landscape') counts.landscape++;
-    else if (p.orientation === 'portrait') counts.portrait++;
-    else counts.square++;
-  });
-  return counts;
 }
