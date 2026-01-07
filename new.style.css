@@ -1,7 +1,6 @@
 /* ========================================
    PHOTO COLLECT - UNIFIED STYLESHEET
-   Old Money Luxury × New Japan × Kinfolk
-   (Merged: style.css + create.css)
+     (Merged: style.css + create.css)
    ======================================== */
 
 /* ========== CSS VARIABLES ========== */
@@ -30,7 +29,11 @@
   --transition-slow: 0.6s ease-out;
   --transition-medium: 0.4s ease-out;
   --transition-fast: 0.2s ease-out;
+
+　/* Album photo aspect (detail page only) */
+  --photo-aspect: 16 / 4; /* default landscape */
 }
+
 
 /* ========== GLOBAL RESET ========== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -423,7 +426,7 @@ body {
   position: relative;
   width: 100%;
   max-width: 800px;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: var(--photo-aspect);
   overflow: hidden;
   border-radius: 2px;
   box-shadow: 0 4px 24px rgba(26, 21, 17, 0.08);
