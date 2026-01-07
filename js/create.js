@@ -472,31 +472,28 @@ document.addEventListener('DOMContentLoaded', () => {
         let portraitCount = 0;
 
         orderedPhotos.forEach(p => {
-            if (!p.ratio) {
-                return;
-            }
-            if (p.ratio >= 1.1) {
-                landscapeCount++;
-            } else if (p.ratio <= 0.9) {
-                portraitCount++;
-            } else {
-                // ほぼ正方形はどちらにもカウントしない
-            }
-        });
+  if (!p.ratio) return;
+  if (p.ratio >= 1.0) {           // 1.1 → 1.0（正方形も横長扱い）
+    landscapeCount++;
+  } else {
+    portraitCount++;
+  }
+});
 
-        let layoutMode = 'portrait';
-        const totalCount = landscapeCount + portraitCount;
-        if (totalCount > 0) {
-            const landscapeRatio = landscapeCount / totalCount;
-            if (landscapeRatio >= 0.6) {
-                layoutMode = 'landscape'; // 横長が多いので16:9にするモード
-            }
-        }
+let layoutMode = 'portrait';
+const totalCount = landscapeCount + portraitCount;
+if (totalCount > 0) {
+  const landscapeRatio = landscapeCount / totalCount;
+  if (landscapeRatio >= 0.5) {    // 0.6 → 0.5（半分以上で横長）
+    layoutMode = 'landscape';
+  }
+}
 
-        console.log('layoutMode decided:', layoutMode, {
-            landscapeCount,
-            portraitCount
-        });
+console.log('LAYOUTMODE:', layoutMode, {
+  landscapeCount,
+  portraitCount,
+  ratio: totalCount > 0 ? (landscapeCount/totalCount).toFixed(2) : 0
+});
 
 
 
