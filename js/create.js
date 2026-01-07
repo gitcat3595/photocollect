@@ -12,29 +12,31 @@ console.log('=== CREATE.JS LOADED ===');
 
 // Wait for DOM
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM LOADED - Initializing...');
+  console.log('DOM LOADED - Initializing...');
 
-    // Get elements
-    const uploadArea = document.getElementById('upload-area');
-    const fileInput = document.getElementById('file-input');
-    const browseButton = document.getElementById('browse-button');
-    const photoPreviewGrid = document.getElementById('photo-preview-grid');
-    const albumForm = document.getElementById('album-form');
-    const submitButton = document.getElementById('submit-button');
+  // 1. 要素取得（最初）
+  const uploadArea = document.getElementById('upload-area');
+  const fileInput = document.getElementById('file-input');
+  const browseButton = document.getElementById('browse-button');
+  const photoPreviewGrid = document.getElementById('photo-preview-grid');
+  const albumForm = document.getElementById('album-form');
+  const submitButton = document.getElementById('submit-button');
 
-    console.log('Elements:', {
-        uploadArea: !!uploadArea,
-        fileInput: !!fileInput,
-        browseButton: !!browseButton,
-        photoPreviewGrid: !!photoPreviewGrid,
-        albumForm: !!albumForm,
-        submitButton: !!submitButton
-    });
+  // 2. デバッグログ
+  console.log('Elements:', {
+    uploadArea: !!uploadArea,
+    fileInput: !!fileInput,
+    browseButton: !!browseButton,
+    photoPreviewGrid: !!photoPreviewGrid,
+    albumForm: !!albumForm,
+    submitButton: !!submitButton
+  });
 
-    if (!uploadArea || !fileInput || !browseButton) {
-        console.error('Required elements not found!');
-        return;
-    }
+  // 3. 要素チェック（最後、重複削除）
+  if (!uploadArea || !fileInput || !browseButton || !submitButton) {
+    console.error('❌ Required elements missing!');
+    return;
+  }
 
     // ========================================
     // BROWSE BUTTON CLICK
@@ -480,7 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-const layoutMode = 'portrait';
+let layoutMode = 'portrait';
 const totalCount = landscapeCount + portraitCount;
 if (totalCount > 0) {
   const landscapeRatio = landscapeCount / totalCount;

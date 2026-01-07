@@ -70,11 +70,14 @@ let swiperInstance = null;
 // ========================================
 // INITIALIZATION
 // ========================================
-
 document.addEventListener('DOMContentLoaded', () => {
-    loadCustomAlbums();
-    initializeCarousel();
-    setupAlbumClickHandlers();
+  console.log('=== MAIN.JS INITIALIZING ===');
+  
+  loadCustomAlbums();
+  initializeCarousel();
+  
+  // 新しい統合イベントリスナーは global に登録済み
+  console.log('✅ Initialization complete');
 });
 
 // ========================================
@@ -608,3 +611,7 @@ const throttledParallax = debounce(() => {
 console.log('%c Family Albums ', 'background: #2C2416; color: #B8975A; font-size: 24px; font-weight: bold; padding: 10px;');
 console.log('%c Timeless Memories, Elegantly Preserved ', 'background: #F5F1E8; color: #1A1511; font-size: 14px; padding: 5px;');
 console.log('%c Built with ❤️ for luxury and simplicity ', 'color: #6B5D52; font-size: 12px; font-style: italic;');
+
+
+// PC Double-click Delete
+document.addEventListener('dblclick',(e)=>{const t=e.target.closest('.album-cover');if(t){const a=t.getAttribute('data-album-id');if(!['yaeyama','alps','tuscany','kyoto'].includes(a)&&confirm('Delete album?')){const l=JSON.parse(localStorage.getItem('familyAlbums')||'[]').filter(b=>b.id!==a);localStorage.setItem('familyAlbums',JSON.stringify(l));delete albumsData[a];const s=t.closest('.swiper-slide');s&&s.remove();swiperInstance&&swiperInstance.update()}}});
