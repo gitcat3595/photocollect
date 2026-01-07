@@ -480,7 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-let layoutMode = 'portrait';
+const layoutMode = 'portrait';
 const totalCount = landscapeCount + portraitCount;
 if (totalCount > 0) {
   const landscapeRatio = landscapeCount / totalCount;

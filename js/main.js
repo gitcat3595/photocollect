@@ -229,150 +229,93 @@ function initializeCarousel() {
 }
 
 // ========================================
-// ALBUM CLICK HANDLERS
-// ========================================
-
-function setupAlbumClickHandlers() {
-    // Use event delegation for dynamic albums
-    document.addEventListener('click', (e) => {
-        const albumCover = e.target.closest('.album-cover');
-        if (albumCover) {
-            const albumId = albumCover.getAttribute('data-album-id');
-            console.log('[MAIN] Album clicked:', albumId);
-            openAlbum(albumId);
-        }
-    });
-}
-
-// ========================================
-// ALBUM CLICK HANDLERS
-// ========================================
-
-function setupAlbumClickHandlers() {
-    // Use event delegation for dynamic albums
-    document.addEventListener('click', (e) => {
-        const albumCover = e.target.closest('.album-cover');
-        if (albumCover) {
-            const albumId = albumCover.getAttribute('data-album-id');
-            console.log('[MAIN] Album clicked:', albumId);
-            openAlbum(albumId);
-        }
-    });
-}
-
-// ========================================
-// LONG PRESS DELETE FOR CUSTOM ALBUMS
+// ALBUM INTERACTIONS (Click + Delete)
 // ========================================
 
 let longPressTimer = null;
 let longPressTarget = null;
+const STATIC_ALBUMS = ['yaeyama', 'alps', 'tuscany', 'kyoto'];
 
-document.addEventListener('mousedown', (e) => {
+// シングルイベントリスナーで全て処理
+document.addEventListener('click', (e) => {
+  const albumCover = e.target.closest('.album-cover');
+  if (!albumCover) return;
+
+  const albumId = albumCover.getAttribute('data-album-id');
+  console.log('[MAIN] Album clicked:', albumId);
+
+  // クリックで開く（シングルクリック）
+  openAlbum(albumId);
+});
+
+document.addEventListener('dblclick', (e) => {
+  const albumCover = e.target.closest('.album-cover');
+  if (!albumCover) return;
+
+  const albumId = albumCover.getAttribute('data-album-id');
+  
+  // 静的アルバムは削除不可
+  if (STATIC_ALBUMS.includes(albumId)) return;
+  
+  const albumTitle = albumCover.querySelector('.album-title')?.textContent || 'this album';
+  
+  if (confirm(`Delete "${albumTitle}"?\n\nThis action cannot be undone.`)) {
+    deleteAlbum(albumId, albumCover);
+  }
+});
+
+// ロングプレス削除（PC + Mobile 共通）
+['mousedown', 'touchstart'].forEach(eventType => {
+  document.addEventListener(eventType, (e) => {
     const albumCover = e.target.closest('.album-cover');
     if (!albumCover) return;
 
     const albumId = albumCover.getAttribute('data-album-id');
-
-    // Skip if it's a static album
-    if (['yaeyama', 'alps', 'tuscany', 'kyoto'].includes(albumId)) {
-        return;
-    }
+    if (STATIC_ALBUMS.includes(albumId)) return;
 
     longPressTarget = albumCover;
     longPressTimer = setTimeout(() => {
-        showDeleteConfirmation(albumId, albumCover);
-    }, 1000); // 1 second long press
-});
-
-document.addEventListener('mouseup', () => {
-    if (longPressTimer) {
-        clearTimeout(longPressTimer);
-        longPressTimer = null;
-        longPressTarget = null;
-    }
-});
-
-document.addEventListener('mousemove', () => {
-    if (longPressTimer) {
-        clearTimeout(longPressTimer);
-        longPressTimer = null;
-        longPressTarget = null;
-    }
-});
-
-// Touch events for mobile
-document.addEventListener('touchstart', (e) => {
-    const albumCover = e.target.closest('.album-cover');
-    if (!albumCover) return;
-
-    const albumId = albumCover.getAttribute('data-album-id');
-
-    // Skip if it's a static album
-    if (['yaeyama', 'alps', 'tuscany', 'kyoto'].includes(albumId)) {
-        return;
-    }
-
-    longPressTarget = albumCover;
-    longPressTimer = setTimeout(() => {
-        showDeleteConfirmation(albumId, albumCover);
-    }, 1000);
-});
-
-document.addEventListener('touchend', () => {
-    if (longPressTimer) {
-        clearTimeout(longPressTimer);
-        longPressTimer = null;
-        longPressTarget = null;
-    }
-});
-
-document.addEventListener('touchmove', () => {
-    if (longPressTimer) {
-        clearTimeout(longPressTimer);
-        longPressTimer = null;
-        longPressTarget = null;
-    }
-});
-
-function showDeleteConfirmation(albumId, albumCover) {
-    const albumTitle = albumCover.querySelector('.album-title')?.textContent || 'this album';
-
-    if (confirm(`Delete "${albumTitle}"?\n\nThis action cannot be undone.`)) {
+      const albumTitle = albumCover.querySelector('.album-title')?.textContent || 'this album';
+      if (confirm(`Delete "${albumTitle}"?\n\nThis action cannot be undone.`)) {
         deleteAlbum(albumId, albumCover);
+      }
+    }, 1000);
+  });
+});
+
+// ロングプレスキャンセル（PC + Mobile）
+['mouseup', 'touchend', 'mousemove', 'touchmove'].forEach(eventType => {
+  document.addEventListener(eventType, () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+      longPressTarget = null;
     }
-}
+  });
+});
 
 function deleteAlbum(albumId, albumCover) {
-    console.log('[MAIN] Deleting album:', albumId);
+  console.log('[MAIN] Deleting album:', albumId);
 
-    // Remove from localStorage
-    const customAlbums = JSON.parse(localStorage.getItem('familyAlbums')) || [];
-    const filteredAlbums = customAlbums.filter(album => album.id !== albumId);
-    localStorage.setItem('familyAlbums', JSON.stringify(filteredAlbums));
+  // localStorage から削除
+  const customAlbums = JSON.parse(localStorage.getItem('familyAlbums')) || [];
+  const filteredAlbums = customAlbums.filter(album => album.id !== albumId);
+  localStorage.setItem('familyAlbums', JSON.stringify(filteredAlbums));
 
-    // Remove from DOM
-    const slide = albumCover.closest('.swiper-slide');
-    if (slide) {
-        slide.remove();
-
-        // Update Swiper
-        if (swiperInstance) {
-            swiperInstance.update();
-        }
+  // DOM からスライド削除
+  const slide = albumCover.closest('.swiper-slide');
+  if (slide) {
+    slide.remove();
+    if (swiperInstance) {
+      swiperInstance.update();
     }
+  }
 
-    // Remove from albumsData
-    delete albumsData[albumId];
+  // albumsData から削除
+  delete albumsData[albumId];
 
-    console.log('[MAIN] Album deleted successfully');
+  console.log('[MAIN] Album deleted successfully');
 }
-
-
-
-
-
-
-
 
 // ========================================
 // OPEN ALBUM WITH BOOK ANIMATION
