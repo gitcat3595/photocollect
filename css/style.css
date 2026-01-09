@@ -1450,7 +1450,7 @@ a.create-button {
   transform: translateY(-50%) translateX(26px); /* 右端でも枠から5px空く想定 */
 }
 
-/* ===== Layout toggle (no-gold, selected=filled, unselected=outline) ===== */
+/* ===== Layout toggle (fixed) ===== */
 .layout-toggle{
   display:flex;
   align-items:center;
@@ -1463,65 +1463,81 @@ a.create-button {
 .layout-icon-btn{
   background: transparent;
   border: 0;
-  position:center
   padding: 6px;
   cursor: pointer;
 }
 
-/* アイコン：基本は「線だけ」 */
+/* icons: unselected = outline, selected = filled */
 .layout-rect{
   display:block;
-  border-radius: 4px; /* ほぼ四角 */
-  background: transparent; /* 非選択は塗らない */
-  border: 2px solid var(--color-accent-dark); /* 非選択は濃い線 */
+  border-radius: 4px;
+  background: transparent;
+  border: 2px solid var(--color-accent-dark);
 }
 
-/* 正確な比率 */
 .layout-rect-landscape{ width: 46px; aspect-ratio: 16 / 9; }
 .layout-rect-portrait { width: 34px; aspect-ratio: 4 / 5; }
 
-/* 選択状態：濃いベタ塗り（線は消す/目立たなく） */
 .layout-toggle.is-landscape .layout-rect-landscape,
 .layout-toggle.is-portrait  .layout-rect-portrait{
   background: var(--color-accent-dark);
   border-color: var(--color-accent-dark);
 }
 
-/* トグル：全体に濃い線、トラックは紙系 */
+/* toggle track */
 .pc-toggle{
+  --pad: 6px;      /* 枠線からの左右余白（4 or 5で調整） */
+  --knob: 28px;    /* ノブサイズ（あなたの現状維持） */
+
   width: 62px;
   height: 36px;
   border-radius: 999px;
-  border: 2px solid var(--color-accent-dark); /* 濃い線 */
-  background: var(--color-bg-primary);        /* 紙色 */
-  padding: 0;
+  border: 2px solid var(--color-accent-dark);
+  background: var(--color-bg-primary);
   position: relative;
+  padding: 0;
   cursor: pointer;
+
+  /* 念のためはみ出し防止 */
+  overflow: hidden;
 }
 
+/* knob: vertical center fixed, left inset fixed */
 .pc-toggle-knob{
- pc-toggle-knob{
   position: absolute;
-  left: 5px;                 /* 枠線からの余白（4〜5pxならここを4か5で調整） */
+  left: var(--pad);
   top: 50%;
-  width: 28px;
-  height: 28px;
+  width: var(--knob);
+  height: var(--knob);
   border-radius: 999px;
   background: var(--color-accent-dark);
 
-}
-
-/* 右=portrait のときだけ右へ */
-.layout-toggle.is-portrait .pc-toggle-knob{
-  transform: translateX(26px);
-}
-
-/* ここが重要：縦中央を固定 */
   transform: translateY(-50%);
   transition: transform var(--transition-fast);
 }
 
-/* right position: keep translateY and add translateX (do NOT overwrite Y) */
+/* right=portrait: SAME padding on right side */
 .layout-toggle.is-portrait .pc-toggle-knob{
-  transform: translateY(-50%) translateX(26px);
+  transform: translateY(-50%) translateX(calc(62px - (var(--pad) * 2) - var(--knob)));
+}
+
+/* touch / hover feedback */
+.layout-toggle .pc-toggle:active,
+.layout-toggle .layout-icon-btn:active{
+  transform: translateY(0); /* 余計なズレ防止 */
+}
+
+.layout-toggle .pc-toggle:hover,
+.layout-toggle .pc-toggle:active{
+  border-color: var(--color-accent-gold);
+}
+
+.layout-toggle .pc-toggle:hover .pc-toggle-knob,
+.layout-toggle .pc-toggle:active .pc-toggle-knob{
+  background: var(--color-accent-gold);
+}
+
+.layout-toggle .layout-icon-btn:hover .layout-rect,
+.layout-toggle .layout-icon-btn:active .layout-rect{
+  border-color: var(--color-accent-gold);
 }
