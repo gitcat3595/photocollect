@@ -255,7 +255,7 @@ body {
 .swiper-slide-shadow-left,
 .swiper-slide-shadow-right {
   opacity: 0.1 !important;
-  width: 50% !important;
+  width: 20% !important;
 }
 
 /* ========== CTA SECTION ========== */
@@ -1144,6 +1144,14 @@ body {
     font-size: 48px;
   }
 
+  .album-main-title{
+    /* 例：最小40px、通常は8vw、最大64px */
+    font-size: clamp(36px, 8vw, 48px);
+    line-height: 1.05;
+    letter-spacing: 0.01em; /* 好みで0でもOK */
+    text-align: center;
+  }
+
   .tagline {
     font-size: 18px;
   }
@@ -1312,35 +1320,208 @@ a.create-button {
   display: inline-block;
   text-decoration: none;
 }
+
 /* ========================================
-   Album Layout Toggle (below last photo)
+   FIX: Album title overflow on mobile
    ======================================== */
+@media (max-width: 768px){
+  /* ヘッダーを強制的に中央・幅100%に */
+  .album-header{
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    overflow-x: clip; /* 近年のブラウザ向け */
+  }
+
+  /* タイトルそのものを中央固定＋はみ出し対策 */
+  #album-title.album-main-title{
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+    text-align: center;
+    overflow-wrap: anywhere; /* 長い単語でも折る */
+    word-break: break-word; /* 保険 */
+    hyphens: auto;
+
+    /* グリフ幅や字間で右に出る事故を抑える */
+    letter-spacing: 0.01em; /* 必要なら 0 にしてOK */
+  }
+}
+/* ========================================
+   Mobile Footer Fix (force unified look)
+   ======================================== */
+@media (max-width: 768px){
+  .site-footer{
+    padding: var(--spacing-lg) var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+    text-align: center;
+  }
+
+  .site-credit{
+    font-family: var(--font-serif-italic);
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+  }
+
+  .site-credit .footer-link,
+  .site-credit .photocollect-link,
+  .site-credit .footer-x-link{
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .site-credit .footer-link:hover,
+  .site-credit .photocollect-link:hover,
+  .site-credit .footer-x-link:hover{
+    color: var(--color-accent-gold);
+  }
+}
+
+/* ===== Layout toggle (PhotoCollect filled, right=portrait) ===== */
 .layout-toggle{
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin: 32px auto 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  margin: 22px auto 0;
+  width: 100%;
 }
 
-.layout-toggle-btn{
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  border: 1px solid var(--color-accent-gold);
-  background: rgba(255,255,255,0.55);
-  color: var(--color-text-primary);
+.layout-icon-btn{
+  background: transparent;
+  border: 0;
+  padding: 6px;
   cursor: pointer;
-  transition: all var(--transition-fast);
-  font-size: 18px;
-  line-height: 1;
 }
 
-.layout-toggle-btn:hover{
-  transform: translateY(-1px);
-  background: rgba(184, 151, 90, 0.15);
+/* 塗りつぶしアイコン（角ほぼ四角・丸み最小） */
+.layout-rect{
+  display:block;
+  border-radius: 2px;
+  background: var(--color-accent-gold); /* 非選択 = ゴールド */
 }
 
-.layout-toggle-btn.active{
+/* 正確な比率 */
+.layout-rect-landscape{ width: 46px; aspect-ratio: 16 / 9; }
+.layout-rect-portrait { width: 34px; aspect-ratio: 4 / 5; }
+
+/* 選択側だけ濃色で塗る */
+.layout-toggle.is-landscape .layout-rect-landscape,
+.layout-toggle.is-portrait  .layout-rect-portrait{
   background: var(--color-accent-dark);
-  color: var(--color-bg-primary);
+}
+
+/* フラットトグル（トラックはゴールドをやめる） */
+/* track */
+.pc-toggle{
+  width: 62px;
+  height: 36px;
+  border-radius: 999px;
+  border: 2px solid var(--color-accent-dark); /* 濃い線 */
+  background: var(--color-bg-primary);        /* 紙色 */
+  position: relative;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* knob: always vertically centered + 5px inset from border */
+.pc-toggle-knob{
+  position: absolute;
+  left: 5px;                 /* 枠線からの余白 */
+  top: 50%;
+  transform: translateY(-50%); /* 上下センター固定 */
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--color-accent-dark);
+  transition: transform var(--transition-fast);
+}
+
+/* right=portrait: translateX は「移動量だけ」指定（YはベースのtranslateYがあるので合成する） */
+.layout-toggle.is-portrait .pc-toggle-knob{
+  transform: translateY(-50%) translateX(26px); /* 右端でも枠から5px空く想定 */
+}
+
+/* ===== Layout toggle (no-gold, selected=filled, unselected=outline) ===== */
+.layout-toggle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  margin: 22px auto 0;
+  width: 100%;
+}
+
+.layout-icon-btn{
+  background: transparent;
+  border: 0;
+  position:center
+  padding: 6px;
+  cursor: pointer;
+}
+
+/* アイコン：基本は「線だけ」 */
+.layout-rect{
+  display:block;
+  border-radius: 4px; /* ほぼ四角 */
+  background: transparent; /* 非選択は塗らない */
+  border: 2px solid var(--color-accent-dark); /* 非選択は濃い線 */
+}
+
+/* 正確な比率 */
+.layout-rect-landscape{ width: 46px; aspect-ratio: 16 / 9; }
+.layout-rect-portrait { width: 34px; aspect-ratio: 4 / 5; }
+
+/* 選択状態：濃いベタ塗り（線は消す/目立たなく） */
+.layout-toggle.is-landscape .layout-rect-landscape,
+.layout-toggle.is-portrait  .layout-rect-portrait{
+  background: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
+}
+
+/* トグル：全体に濃い線、トラックは紙系 */
+.pc-toggle{
+  width: 62px;
+  height: 36px;
+  border-radius: 999px;
+  border: 2px solid var(--color-accent-dark); /* 濃い線 */
+  background: var(--color-bg-primary);        /* 紙色 */
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.pc-toggle-knob{
+ pc-toggle-knob{
+  position: absolute;
+  left: 5px;                 /* 枠線からの余白（4〜5pxならここを4か5で調整） */
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--color-accent-dark);
+
+}
+
+/* 右=portrait のときだけ右へ */
+.layout-toggle.is-portrait .pc-toggle-knob{
+  transform: translateX(26px);
+}
+
+/* ここが重要：縦中央を固定 */
+  transform: translateY(-50%);
+  transition: transform var(--transition-fast);
+}
+
+/* right position: keep translateY and add translateX (do NOT overwrite Y) */
+.layout-toggle.is-portrait .pc-toggle-knob{
+  transform: translateY(-50%) translateX(26px);
 }
